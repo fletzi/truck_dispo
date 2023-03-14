@@ -1,0 +1,41 @@
+nav {
+  background-color: var(--acc-color);
+  padding: 0;
+}
+
+.subnav-item {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  border-right: 2px solid var(--sec-color);
+  cursor: pointer;
+  width: 240px;
+}
+
+.subnav-inner {
+  padding: 6px 20px 6px 20px;
+}
+
+.subnav-item img {
+  width: 25px;
+}
+
+.subnav-item span {
+  position: relative;
+  top: 1px;
+  margin-left: 10px;
+}
+
+.subnav-item:hover {
+  background-color: var(--hover-color);
+  border-bottom: 4px solid var(--sec-color);
+}
+
+.subnav-item-active {
+  cursor: initial;
+  background-color: var(--hover-color);
+  border-bottom: 4px solid var(--sec-color);
+}
+
+.flex-subnav {
+  display: flex;
+}

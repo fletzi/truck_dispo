@@ -1,0 +1,28 @@
+<nav class="navbar navbar-light">
+    <div class="flex-subnav">
+      <div class="subnav-item subnav-item-active" (click)="removeClass('0', '/my-driver-positions')">
+        <div class="subnav-inner">
+          <img src="assets/img/myDriverPostions.png" alt="My Driver Positions">
+          <span>My Driver Positions</span>
+        </div>
+      </div>
+      <div class="subnav-item" href="/all-driver-positions" (click)="removeClass('1', '/all-driver-positions')">
+        <div class="subnav-inner">
+          <img src="assets/img/allDriverPositions.png" alt="All Driver Positions">
+          <span>All Driver Positions</span>
+        </div>
+      </div>
+      <div class="subnav-item" (click)="removeClass('2', '/edit-driver-positions')">
+        <div class="subnav-inner">
+          <img src="assets/img/editDriverPostions.png" alt="Edit Driver Position">
+          <span>Edit Driver Position</span>
+        </div>
+      </div>
+      <div class="subnav-item" (click)="removeClass('3', '/add-contract')">
+        <div class="subnav-inner">
+          <img src="assets/img/addContract.png" alt="Add Contract">
+          <span>Add New Contract</span>
+        </div>
+    </div>
+  </div>
+</nav>
