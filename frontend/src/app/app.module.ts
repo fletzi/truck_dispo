@@ -8,6 +8,7 @@ import { MyDriverPositionsComponent } from './my-driver-positions/my-driver-posi
 import { MapComponent } from './map/map.component';
 import { RouterModule, Routes} from '@angular/router';
 import { AllDriverPositionsComponent } from './all-driver-positions/all-driver-positions.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    GoogleMapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
