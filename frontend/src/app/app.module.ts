@@ -12,7 +12,9 @@ import { AllDriverPositionsComponent } from './all-driver-positions/all-driver-p
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
   {path: 'my-driver-positions', component: MyDriverPositionsComponent},
-  {path: 'all-driver-positions', component: AllDriverPositionsComponent}
+  {path: 'all-driver-positions', component: AllDriverPositionsComponent},
+  {path: 'edit-driver-position', component: MapComponent},
+  {path: 'add-contract', component: MapComponent}
 ];
 
 @NgModule({
