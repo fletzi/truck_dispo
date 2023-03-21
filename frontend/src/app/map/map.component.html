@@ -1,3 +1,18 @@
 <div class="map-wrapper">
   <div id="map"></div>
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="spinner-border text-white" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div class="date-picker">
+    <img (click)="decreaseDate()" src="assets/img/arrow_left.png" alt="previous">
+    <span>{{ myDate | date}}</span>
+    <img (click)="increaseDate()" src="assets/img/arrow_right.png" alt="next">
+  </div>
 </div>
+
+
+
+
+

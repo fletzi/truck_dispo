@@ -9,8 +9,28 @@ export class MapComponent implements OnInit {
 
   // @ts-ignore
   map: google.maps.Map;
+  // @ts-ignore
+  currentInfoWindow: google.maps.InfoWindow = null;
 
-  constructor() { }
+  constructor() {
+  }
+
+  myDate: Date = new Date();
+
+  increaseDate() {
+    const newDate = new Date(this.myDate);
+    newDate.setDate(newDate.getDate() + 1);
+    this.myDate = newDate;
+    this.initMap();
+  }
+
+  decreaseDate() {
+    const newDate = new Date(this.myDate);
+    newDate.setDate(newDate.getDate() - 1);
+    this.myDate = newDate;
+    this.initMap();
+  }
+
 
   // Initializes the Google Maps "Map" after this component is initialized
   ngOnInit() {
@@ -20,7 +40,7 @@ export class MapComponent implements OnInit {
   // Initialisiert die Google Maps "Map"
   initMap(): void {
     this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-      center: { lat: 39, lng: -101.299591 }, // set map center to the center of the USA
+      center: {lat: 39, lng: -101.299591}, // set map center to the center of the USA
       zoom: 4, // set the initial zoom to 4
       disableDefaultUI: true, // disables all default map controls
       zoomControl: true, // enables zoom controls
@@ -35,21 +55,42 @@ export class MapComponent implements OnInit {
 
 
   private geocoder = new google.maps.Geocoder();
+  isLoading = false;
 
-  // gets the latitude and longitude of a given address string - uses the Google geocoder api
+// gets the latitude and longitude of a given address string - uses the Google geocoder api
   getLatLngFromAddress(address: string): Promise<google.maps.LatLng> {
+    this.isLoading = true;
+    // check if result is cached
+    if (this.cache[address]) {
+      this.isLoading = false;
+      return Promise.resolve(this.cache[address]);
+    }
     return new Promise((resolve, reject) => {
-      this.geocoder.geocode({ address: address }, (results, status) => {
+      // set initial delay
+      let delay = 0;
+      this.geocoder.geocode({address: address}, (results, status) => {
+        this.isLoading = false;
         if (status === google.maps.GeocoderStatus.OK) {
           if (results) {
+            // cache result
+            this.cache[address] = results[0].geometry.location;
             resolve(results[0].geometry.location);
           }
+        } else if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+          // add delay if over query limit
+          delay += 500;
+          setTimeout(() => {
+            this.getLatLngFromAddress(address).then(resolve).catch(reject);
+          }, delay);
         } else {
           reject(`Geocoding failed: ${status}`);
         }
       });
     });
   }
+
+// cache object
+  cache: {[address: string]: google.maps.LatLng} = {};
 
   addressList = [
     "Chicago, USA",
@@ -71,14 +112,41 @@ export class MapComponent implements OnInit {
           position: latLng,
           map: this.map,
           title: address,
-          icon: "assets/img/img2.png",
           animation: google.maps.Animation.DROP,
         });
-
         const infoWindow = new google.maps.InfoWindow({
-          content: address
+          content: '<div class="map-info">\n' +
+            '  <span>Driver Name</span>\n' +
+            '  <table class="table">\n' +
+            '    <thead>\n' +
+            '    <tr>\n' +
+            '      <th scope="col">Location:</th>\n' +
+            '      <td>location</td>\n' +
+            '    </tr>\n' +
+            '    </thead>\n' +
+            '    <tbody>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Status:</th>\n' +
+            '      <td>status</td>\n' +
+            '    </tr>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Truck:</th>\n' +
+            '      <td>truck</td>\n' +
+            '    </tr>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Trailer:</th>\n' +
+            '      <td>trailer</td>\n' +
+            '    </tr>\n' +
+            '    </tbody>\n' +
+            '  </table>\n' +
+            '\n' +
+            '</div>'
         });
         marker.addListener('click', () => {
+          if (this.currentInfoWindow) {
+            this.currentInfoWindow.close();
+          }
+          this.currentInfoWindow = infoWindow;
           infoWindow.open(this.map, marker);
         });
       }).catch(error => {

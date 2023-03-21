@@ -6,3 +6,13 @@
   --hover-color: #e0e0e0;
 }
 
+.map-info table {
+  margin-top: 10px;
+}
+
+.map-info span {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+

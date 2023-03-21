@@ -3,9 +3,60 @@
   border-radius: 25px;
   overflow: hidden;
   margin: 8px;
+  position: relative;
+  width: 100%;
 }
 
 #map {
   width: 100%;
   height: 400px;
+}
+
+.loader-container {
+  z-index: 1001;
+  width: 100%;
+  height: 100%;
+  background-color: var(--sec-color);
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.spinner-border {
+  position: absolute;
+  margin: auto;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.date-picker {
+  z-index: 1000;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  width: 22%;
+  height: 30px;
+  text-align: center;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 85%; left: 0; bottom: 0; right: 0;
+  background-color: white;
+  border-radius: 50px;
+  box-shadow:  14px 14px 28px #8b8b8b;
+}
+
+.date-picker span {
+  position: relative;
+  top: 3px;
+}
+
+.date-picker img {
+  width: 20px;
+  cursor: pointer;
+  margin-left: 12px;
+  margin-right: 12px;
+  position: relative;
+  top: 1px;
+}
+
+.date-picker img:hover {
+  opacity: 70%;
 }
