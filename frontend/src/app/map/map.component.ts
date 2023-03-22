@@ -7,10 +7,12 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MapComponent implements OnInit {
 
+  isLoading = false;
   // @ts-ignore
   map: google.maps.Map;
   // @ts-ignore
   currentInfoWindow: google.maps.InfoWindow = null;
+  markers: google.maps.Marker[] = [];
 
   constructor() {
   }
@@ -49,27 +51,25 @@ export class MapComponent implements OnInit {
     });
 
     // adds markers to all addresses given to the function
-    this.addMarkersToMap();
-
+    this.isLoading = true;
+    this.addMarkersToMap().finally(() => {
+      this.isLoading = false;
+    });
   }
 
 
   private geocoder = new google.maps.Geocoder();
-  isLoading = false;
 
 // gets the latitude and longitude of a given address string - uses the Google geocoder api
   getLatLngFromAddress(address: string): Promise<google.maps.LatLng> {
-    this.isLoading = true;
     // check if result is cached
     if (this.cache[address]) {
-      this.isLoading = false;
       return Promise.resolve(this.cache[address]);
     }
     return new Promise((resolve, reject) => {
       // set initial delay
       let delay = 0;
       this.geocoder.geocode({address: address}, (results, status) => {
-        this.isLoading = false;
         if (status === google.maps.GeocoderStatus.OK) {
           if (results) {
             // cache result
@@ -105,9 +105,14 @@ export class MapComponent implements OnInit {
   ];
 
   // adds markers to all addresses given to the function
-  addMarkersToMap() {
-    this.addressList.forEach(address => {
-      this.getLatLngFromAddress(address).then(latLng => {
+  // @ts-ignore
+  addMarkersToMap(): Promise<void | Awaited<void>[]> {
+    // Remove existing markers from the map
+    this.markers?.forEach(marker => marker.setMap(null));
+    this.markers = [];
+
+    return Promise.all(this.addressList.map(address => {
+      return this.getLatLngFromAddress(address).then(latLng => {
         const marker = new google.maps.Marker({
           position: latLng,
           map: this.map,
@@ -149,10 +154,9 @@ export class MapComponent implements OnInit {
           this.currentInfoWindow = infoWindow;
           infoWindow.open(this.map, marker);
         });
-      }).catch(error => {
-        console.log(error);
+        // Add the marker to the array of markers
+        this.markers.push(marker);
       });
-    });
+    }));
   }
-
 }
