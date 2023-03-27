@@ -9,6 +9,8 @@ import { MapComponent } from './map/map.component';
 import { RouterModule, Routes} from '@angular/router';
 import { AllDriverPositionsComponent } from './all-driver-positions/all-driver-positions.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { HttpClientModule } from '@angular/common/http';
+import { AlertComponent } from './alert/alert.component';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -25,14 +27,16 @@ const appRoutes: Routes = [
     SubnavComponent,
     MyDriverPositionsComponent,
     MapComponent,
-    AllDriverPositionsComponent
+    AllDriverPositionsComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    GoogleMapsModule
+    GoogleMapsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

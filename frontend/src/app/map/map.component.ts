@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-map',
@@ -13,11 +15,50 @@ export class MapComponent implements OnInit {
   // @ts-ignore
   currentInfoWindow: google.maps.InfoWindow = null;
   markers: google.maps.Marker[] = [];
+  errorMessage: any;
+  // @ts-ignore
+  errorCode: number;
 
-  constructor() {
+
+  constructor(private http: HttpClient) {
   }
 
   myDate: Date = new Date();
+  drivers: any[] = [];
+
+  getAllDrivers() {
+    let formattedDate = format(this.myDate, 'yyyy-MM-dd');
+    // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
+    let url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/dispo/getAllDrivers/${formattedDate}`;
+    this.http.get(url).subscribe(
+      (data: any) => {
+        this.drivers = data;
+        if (data.length == 1) {
+          this.errorMessage = data.length + " driver position has been updated.";
+        }
+        else {
+          this.errorMessage = data.length + " driver positions have been updated."
+        }
+        this.errorCode = 200; // Hier setzen wir den errorCode auf den Standardwert 200 für eine erfolgreiche Anfrage
+        setTimeout(() => {
+          this.errorMessage = null; // Hier setzen wir das errorMessage auf null, um es auszublenden
+        }, 10000); // 10000 Millisekunden entsprechen 10 Sekunden
+      },
+      (error: HttpErrorResponse) => {
+        console.error('HTTP Request was not successful', error);
+        if (error.status == 400) {
+          this.errorMessage = "There are no driver positions for the date you selected.";
+        }
+        else {
+          this.errorMessage = error.error.message + " Code: " + error.status;
+        }
+        this.errorCode = error.status;
+        setTimeout(() => {
+          this.errorMessage = null; // Hier setzen wir das errorMessage auf null, um es auszublenden
+        }, 10000); // 10000 Millisekunden entsprechen 10 Sekunden
+      }
+    );
+  }
 
   increaseDate() {
     const newDate = new Date(this.myDate);
@@ -32,7 +73,6 @@ export class MapComponent implements OnInit {
     this.myDate = newDate;
     this.initMap();
   }
-
 
   // Initializes the Google Maps "Map" after this component is initialized
   ngOnInit() {
@@ -110,6 +150,8 @@ export class MapComponent implements OnInit {
     // Remove existing markers from the map
     this.markers?.forEach(marker => marker.setMap(null));
     this.markers = [];
+
+    this.getAllDrivers();
 
     return Promise.all(this.addressList.map(address => {
       return this.getLatLngFromAddress(address).then(latLng => {
