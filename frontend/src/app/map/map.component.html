@@ -1,14 +1,3 @@
-<div class="alert-wrapper">
-  <div *ngIf="errorMessage" class="alert fade"
-       [ngClass]="{ 'alert-danger': errorCode >= 500,
-                  'alert-warning': errorCode >= 400 && errorCode < 500,
-                  'alert-info': errorCode >= 300 && errorCode < 400,
-                  'alert-success': errorCode < 300,
-                  'show': errorMessage }"
-       role="alert">
-    {{ errorMessage }}
-  </div>
-</div>
 <div class="map-wrapper">
   <div id="map"></div>
   <div *ngIf="isLoading" class="loader-container">
@@ -23,8 +12,6 @@
     <img (click)="increaseDate()" src="assets/img/arrow_right.png" alt="next">
   </div>
 </div>
-
-<button (click)="getAllDrivers()">Get</button>
 
 
 

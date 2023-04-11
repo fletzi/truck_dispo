@@ -1,0 +1,50 @@
+.alert-wrapper {
+  height: 30px;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.alert {
+  border-radius: 0;
+  height: 30px;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0 0 0 0!important;
+  border-left: 0;
+  border-right: 0;
+  opacity: 0;
+}
+
+.alert.show {
+  opacity: 1;
+}
+
+.alert p {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
+  color: #383838;
+  font-weight: 600;
+  margin-left: 22px;
+  position: relative;
+  top: 3px;
+}
+
+.alert-danger {
+  border-color: #CD533B!important;
+  background-color: rgba(205, 83, 59, 0.35) !important;
+}
+
+.alert-warning {
+  border-color: #ECD444!important;
+  background-color: rgba(236, 212, 68, 0.35) !important;
+}
+
+.alert-info {
+  border-color: #196FB2!important;
+  background-color: rgba(25, 111, 178, 0.35) !important;
+}
+
+.alert-success {
+  border-color: #4FB286!important;
+  background-color: rgba(79, 178, 134, 0.35) !important;
+}

@@ -1,0 +1,12 @@
+<div class="alert-wrapper">
+  <div *ngIf="errorMessage" class="alert"
+       [@fadeInOut]="errorMessage"
+       [ngClass]="{ 'alert-danger': errorCode >= 500,
+                  'alert-warning': errorCode >= 400 && errorCode < 500,
+                  'alert-info': errorCode >= 300 && errorCode < 400,
+                  'alert-success': errorCode < 300,
+                  'show': errorMessage }"
+       role="alert">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>

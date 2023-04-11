@@ -1,0 +1,30 @@
+<div class="login-background">
+
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="spinner-wrapper">
+      <div class="spinner-border text-white" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-wrapper">
+    <h2>Login</h2>
+    <div class="invalid-login-wrapper">
+      <div *ngIf="errorMessage" class="invalid-login text-danger">{{ errorMessage }}</div>
+    </div>
+    <form #loginForm="ngForm">
+      <div class="mb-3">
+        <label for="inputEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control input-field" id="inputEmail" [(ngModel)]="email" name="email" (click)="clearError()">
+      </div>
+      <div class="mb-3">
+        <label for="inputPassword" class="form-label">Password</label>
+        <input type="password" class="form-control input-field" id="inputPassword" [(ngModel)]="password" name="password" (click)="clearError()">
+      </div>
+      <button type="submit" class="btn btn-primary login-button" (click)="onSubmit()">Submit</button>
+    </form>
+  </div>
+</div>
+
+

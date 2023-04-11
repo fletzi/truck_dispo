@@ -11,9 +11,15 @@ import { AllDriverPositionsComponent } from './all-driver-positions/all-driver-p
 import { GoogleMapsModule } from '@angular/google-maps';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertComponent } from './alert/alert.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfocardComponent } from './infocard/infocard.component';
+import { TablecontrolComponent } from './tablecontrol/tablecontrol.component';
+import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'my-driver-positions', component: MyDriverPositionsComponent},
   {path: 'all-driver-positions', component: AllDriverPositionsComponent},
   {path: 'edit-driver-position', component: MapComponent},
@@ -29,12 +35,17 @@ const appRoutes: Routes = [
     MapComponent,
     AllDriverPositionsComponent,
     AlertComponent,
+    InfocardComponent,
+    TablecontrolComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     GoogleMapsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
