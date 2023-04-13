@@ -1,0 +1,63 @@
+
+
+ <div class="table-wrapper">
+   <mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter">
+   <table mat-table [dataSource]="dataSource" class="full-width-table table-border" matSort>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Driver Name </th>
+        <td mat-cell *matCellDef="let driver" class="driver-td"> {{ driver.name }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="monday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="monday"> Monday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.monday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="tuesday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="tuesday"> Tuesday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.tuesday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="wednesday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="wednesday"> Wednesday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.wednesday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="thursday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="thursday"> Thursday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.thursday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="friday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="friday"> Friday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.friday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="saturday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="saturday"> Saturday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.saturday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sunday">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="sunday"> Sunday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.sunday }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mondayNW">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="mondayNW"> Monday </th>
+        <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event)"> {{ driver.mondayNW }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> <span *ngIf="isAdmin()"><button mat-button (click)="exporter.exportTable('csv')"></button></span> </th>
+        <td mat-cell *matCellDef="let driver"> <button mat-icon-button><mat-icon>edit</mat-icon></button> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+</mat-table>
+ </div>
+

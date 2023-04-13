@@ -16,6 +16,12 @@ import { InfocardComponent } from './infocard/infocard.component';
 import { TablecontrolComponent } from './tablecontrol/tablecontrol.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from "@angular/forms";
+import { TableComponent } from './table/table.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatLegacyButtonModule} from "@angular/material/legacy-button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTableExporterModule} from "mat-table-exporter";
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -38,6 +44,7 @@ const appRoutes: Routes = [
     InfocardComponent,
     TablecontrolComponent,
     LoginComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +53,11 @@ const appRoutes: Routes = [
     GoogleMapsModule,
     HttpClientModule,
     FormsModule,
+    MatTableModule,
+    MatSortModule,
+    MatLegacyButtonModule,
+    MatIconModule,
+    MatTableExporterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

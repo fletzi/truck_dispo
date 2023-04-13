@@ -211,7 +211,7 @@ export class MapComponent implements OnInit {
           }
           infowindow.open(this.map, marker);
           this.currentInfoWindow = infowindow;
-          this.infocardsService.setDetails(driver.firstName + " " + driver.lastName, driver.address, statusString, deliveryTimeFormatted, driver.truckVIN, "ride", driver.trailerVIN);
+          this.infocardsService.setDetails(driver.firstName + " " + driver.lastName, driver.address, statusString, deliveryTimeFormatted, driver.truckVIN, driver.rideNumber.toString(), driver.trailerVIN);
 
           //add code for selection of drive in table / view on side panel
         });

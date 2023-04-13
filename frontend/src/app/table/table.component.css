@@ -1,0 +1,37 @@
+.table-wrapper {
+  width: auto;
+  overflow: hidden;
+  margin: 10px 20px;
+  border-radius: 25px;
+  box-shadow:  5px 5px 10px #cacaca;
+  border-color: white;
+}
+
+.table-head {
+  color: white;
+}
+
+.selected-cell {
+  background-color: rgb(213, 237, 255);
+}
+
+th {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--sec-color)!important;
+  color: white;
+}
+
+td {
+  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: white;
+  color: black;
+}
+
+.driver-td {
+  cursor: unset;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #e8e8e8;
+  font-weight: 800;
+}
+
