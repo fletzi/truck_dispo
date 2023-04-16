@@ -1,0 +1,61 @@
+<div class="card-wrapper">
+  <div class="control-card">
+
+    <div class="control-wrapper">
+      <div class="row">
+        <div class="col-3 table-controls-wrapper">
+          <span class="table-controls"> Table Controls </span>
+        </div>
+        <div class="col-3 week-wrapper">
+          <div class="week-of-field">
+            <span class="week-of-titel">selected week of</span>
+          </div>
+          <div class="week-of-display-field">
+            <span class="week-of-date"> {{ selectedWeekDateFormatted }} </span>
+          </div>
+          <div class="week-field">
+            <div class="d-flex">
+              <button class="button-control-week" (click)="goToPreviousWeek()">-</button>
+              <button class="button-control-week" (click)="goToNextWeek()">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="col search-bar-wrapper">
+          <form #searchForm="ngForm">
+            <input class="search-field" type="text" placeholder="Search.." name="search" [(ngModel)]="searchString">
+            <button class="clear-button" type="submit">
+              <img (click)="clearInput()" class="clear-icon" src="assets/img/clear.png" alt="clear">
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="infobar"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button-control" (click)="showDriverName = !showDriverName; tableService.updateShowDriverName(showDriverName)" [ngClass]="{ 'button-active' : showDriverName, 'button-inactive' : !showDriverName }">Driver Name</button>
+        </div>
+        <div class="col d-flex control-day-wrapper">
+            <button class="button-control-day" (click)="showMonday = !showMonday; tableService.updateShowMonday(showMonday)" [ngClass]="{ 'button-active' : showMonday, 'button-inactive' : !showMonday }">Mo</button>
+            <button class="button-control-day" (click)="showTuesday = !showTuesday; tableService.updateShowTuesday(showTuesday)" [ngClass]="{ 'button-active' : showTuesday, 'button-inactive' : !showTuesday }">Tu</button>
+            <button class="button-control-day" (click)="showWednesday = !showWednesday; tableService.updateShowWednesday(showWednesday)" [ngClass]="{ 'button-active' : showWednesday, 'button-inactive' : !showWednesday }">We</button>
+            <button class="button-control-day" (click)="showThursday = !showThursday; tableService.updateShowThursday(showThursday)" [ngClass]="{ 'button-active' : showThursday, 'button-inactive' : !showThursday }">Th</button>
+            <button class="button-control-day" (click)="showFriday = !showFriday; tableService.updateShowFriday(showFriday)" [ngClass]="{ 'button-active' : showFriday, 'button-inactive' : !showFriday }">Fr</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button-control" (click)="showEdit = !showEdit; tableService.updateShowEdit(showEdit)" [ngClass]="{ 'button-active' : showEdit, 'button-inactive' : !showEdit }">Edit</button>
+        </div>
+        <div class="col d-flex control-day-wrapper control-day-2-wrapper">
+          <button class="button-control-day" (click)="showSaturday = !showSaturday; tableService.updateShowSaturday(showSaturday)" [ngClass]="{ 'button-active' : showSaturday, 'button-inactive' : !showSaturday }">Sa</button>
+          <button class="button-control-day" (click)="showSunday = !showSunday; tableService.updateShowSunday(showSunday)" [ngClass]="{ 'button-active' : showSunday, 'button-inactive' : !showSunday }">So</button>
+          <button class="button-control-day" (click)="showMondayNW = !showMondayNW; tableService.updateShowMondayNW(showMondayNW)" [ngClass]="{ 'button-active' : showMondayNW, 'button-inactive' : !showMondayNW }">Mo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

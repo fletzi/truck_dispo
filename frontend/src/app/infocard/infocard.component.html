@@ -1,0 +1,47 @@
+<div class="card-wrapper">
+  <div class="infocard">
+    <div class="info-wrapper">
+      <div class="row">
+        <div class="col">
+          <span class="driver-name">{{ driverName }}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="infobar"></div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <img class="info-img" src="assets/img/location.png" alt="location">
+          <span class="info-detail">{{ driverLocation }}</span>
+        </div>
+        <div class="col">
+          <span class="info-title d-flex" >Status:
+            <div class="info-status" [ngClass]="{ 'status-available': driverStatus == 'available', 'status-unavailable': driverStatus == 'unavailable', 'status-vacation': driverStatus == 'vacation'}">
+              <span class="info-status-var">{{ driverStatus }}</span>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <img class="info-img" src="assets/img/clock.png" alt="location">
+          <span class="info-detail">{{ driverClearingTime }}</span>
+        </div>
+        <div class="col d-flex">
+          <span class="info-title d-flex info-truck">Truck:</span><span class="info-detail">{{ truckVIN }}</span>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <img class="info-img" src="assets/img/contract.png" alt="location">
+          <span class="info-detail">{{ driverRide }}</span>
+        </div>
+        <div class="col d-flex">
+          <span class="info-title d-flex info-trailer">Trailer: </span><span id="driver-status-text" class="info-detail">{{ trailerVIN }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

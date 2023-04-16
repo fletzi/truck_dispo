@@ -21,7 +21,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatLegacyButtonModule} from "@angular/material/legacy-button";
 import {MatIconModule} from "@angular/material/icon";
-import {MatTableExporterModule} from "mat-table-exporter";
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},

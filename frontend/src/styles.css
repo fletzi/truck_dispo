@@ -1,11 +1,12 @@
 :root {
   --main-color: #1B266F;
   --sec-color: #196FB2;
-  --acc-color: #E3E9EF;
+  --acc-color: #e3e9ef;
   --acc2-color: #F8F9FA;
   --hover-color: #e0e0e0;
   width: 100vw;
   overflow: clip;
+
 }
 
 .map-info table {

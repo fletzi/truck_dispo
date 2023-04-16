@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from '@angular/material/table';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import {TableService} from "../table.service";
 
 
 export interface Driver {
@@ -81,21 +83,231 @@ const ELEMENT_DATA: Driver[] = [
 
 export class TableComponent implements AfterViewInit {
 
+  showDriverName: boolean = true;
+  showEdit: boolean = true;
+
+  showMonday: boolean = true;
+  showTuesday: boolean = true;
+  showWednesday: boolean = true;
+  showThursday: boolean = true;
+  showFriday: boolean = true;
+  showSaturday: boolean = true;
+  showSunday: boolean = true;
+  showMondayNW: boolean = true;
+
+  constructor(private tableControlService: TableService) { }
+
+  ngOnInit(): void {
+    this.tableControlService.showDriverName$.subscribe(showDriverName => {
+      this.showDriverName = showDriverName;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showEdit$.subscribe(showEdit => {
+      this.showEdit = showEdit;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showMonday$.subscribe(showMonday => {
+      this.showMonday = showMonday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showTuesday$.subscribe(showTuesday => {
+      this.showTuesday = showTuesday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showWednesday$.subscribe(showWednesday => {
+      this.showWednesday = showWednesday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showThursday$.subscribe(showThursday => {
+      this.showThursday = showThursday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showFriday$.subscribe(showFriday => {
+      this.showFriday = showFriday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showSaturday$.subscribe(showSaturday => {
+      this.showSaturday = showSaturday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showSunday$.subscribe(showSunday => {
+      this.showSunday = showSunday;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+
+    this.tableControlService.showMondayNW$.subscribe(showMondayNW => {
+      this.showMondayNW = showMondayNW;
+      this.updateHiddenColumns();
+      this.updateView()
+    });
+  }
+
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort
+
+  // @ts-ignore
+  @ViewChild(MatTableExporterDirective) matTableExporter: MatTableExporterDirective;
 
   ngAfterViewInit() {
     // @ts-ignore
     this.dataSource.sort = this.sort;
   }
 
-  displayedColumns: string[] = ['name', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'mondayNW', 'edit'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  hiddenColumns: number[] = [];
 
-  // @ts-ignore
-  highlight(row) {
+  updateHiddenColumns() {
+    this.hiddenColumns = [9];
+
+    if (!this.showDriverName) {
+      this.hiddenColumns.push(0); // driver name column index
+    }
+
+    if (!this.showMonday) {
+      this.hiddenColumns.push(1); // monday column index
+    }
+
+    if (!this.showTuesday) {
+      this.hiddenColumns.push(2); // tuesday column index
+    }
+
+    if (!this.showWednesday) {
+      this.hiddenColumns.push(3); // wednesday column index
+    }
+
+    if (!this.showThursday) {
+      this.hiddenColumns.push(4); // thursday column index
+    }
+
+    if (!this.showFriday) {
+      this.hiddenColumns.push(5); // friday column index
+    }
+
+    if (!this.showSaturday) {
+      this.hiddenColumns.push(6); // saturday column index
+    }
+
+    if (!this.showSunday) {
+      this.hiddenColumns.push(7); // sunday column index
+    }
+
+    if (!this.showMondayNW) {
+      this.hiddenColumns.push(8); // mondayNW column index
+    }
+
+    console.log(this.hiddenColumns);
 
   }
+
+  displayedColumns: string[] = ['name', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'mondayNW', 'edit'];
+
+  updateView() {
+    const displayedColumns = [
+      'name',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+      'mondayNW',
+      'edit'
+    ];
+
+    if (!this.showDriverName) {
+      const index = displayedColumns.indexOf('name');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showMonday) {
+      const index = displayedColumns.indexOf('monday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showTuesday) {
+      const index = displayedColumns.indexOf('tuesday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showWednesday) {
+      const index = displayedColumns.indexOf('wednesday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showThursday) {
+      const index = displayedColumns.indexOf('thursday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showFriday) {
+      const index = displayedColumns.indexOf('friday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showSaturday) {
+      const index = displayedColumns.indexOf('saturday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showSunday) {
+      const index = displayedColumns.indexOf('sunday');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showMondayNW) {
+      const index = displayedColumns.indexOf('mondayNW');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    if (!this.showEdit) {
+      const index = displayedColumns.indexOf('edit');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
+
+    console.log(this.displayedColumns);
+    this.displayedColumns = displayedColumns;
+    console.log(this.displayedColumns);
+  }
+
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
 
   // @ts-ignore
   selectedCell: HTMLElement = null;
@@ -117,4 +329,11 @@ export class TableComponent implements AfterViewInit {
   isAdmin() {
     return sessionStorage.getItem('isAdmin') == "true";
   }
+
+  now = new Date();
+
+  exportTable(){
+    this.matTableExporter.exportTable('xlsx', {fileName:'myDriversExport_' + this.now.toDateString(), sheet: 'export'});
+  }
+
 }

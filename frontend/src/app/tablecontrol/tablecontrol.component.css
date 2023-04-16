@@ -1,0 +1,206 @@
+.card-wrapper {
+  border-radius: 25px;
+  overflow: hidden;
+  margin: 8px 20px 10px 20px;
+  position: relative;
+  width: auto;
+  background-color: white;
+  box-shadow:  5px 5px 10px #cacaca;
+}
+
+.control-card {
+  height: 190px;
+}
+
+.control-wrapper {
+  padding-top: 15px;
+  padding-left: 15px;
+}
+
+.table-controls {
+  font-family: Montserrat, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.infobar {
+  margin-top: 2px;
+  border-radius: 80px;
+  height: 0;
+  width: 70px;
+  border: none;
+  border-top: 4px solid black;
+  margin-bottom: 10px;
+}
+
+.search-bar-wrapper {
+  height: 20px;
+}
+
+.clear-icon {
+  position: relative;
+  top: -2px;
+  height: 15px;
+}
+
+.search-field {
+  width: 255px;
+  border-radius: 25px;
+  background-color: var(--acc-color);
+  border: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.search-field:focus-visible {
+  outline: #196FB2 auto 1px;
+}
+
+.clear-button {
+  border-radius: 100%;
+  border: none;
+  background-color: #196FB2;
+  margin-left: 10px;
+  box-shadow:  3px 3px 8px #cacaca;
+}
+
+.clear-button:active {
+  box-shadow: none;
+  background-color: #212121;
+}
+
+.clear-button:active .clear-icon {
+  opacity: 90%;
+  animation: none;
+}
+
+.clear-button:focus .clear-icon {
+  animation: spin 1s cubic-bezier(0.83, 0, 0.17, 1) 0s 1 normal forwards;
+}
+
+@keyframes spin {
+  0%   {transform: rotate(0deg)}
+  50%  {transform: rotate(80deg)}
+  100% {transform: rotate(360deg)}
+}
+
+.button-control {
+  margin-top: 10px;
+  font-family: Montserrat, sans-serif;
+  border-radius: 25px;
+  border: none;
+  width: 180px;
+  height: 30px;
+  text-align: center;
+}
+
+.button-control-day {
+  margin-top: 10px;
+  font-family: Montserrat, sans-serif;
+  border-radius: 100%;
+  border: none;
+  width: 43px;
+  height: 43px;
+  text-align: center;
+  margin-right: 20px;
+}
+
+
+.control-day-2-wrapper {
+  margin-left: 60px;
+  margin-top: 15px;
+}
+
+.control-day-wrapper {
+  margin-left: 40px;
+  height: 30px;
+}
+
+.button-active {
+  background-color: #196FB2;
+  color: white;
+  box-shadow:  3px 3px 8px #cacaca;
+}
+
+.button-inactive {
+  background-color: white;
+  color: black;
+  box-shadow:inset 0 0 0 2px #196FB2;
+}
+
+.week-wrapper {
+  width: 200px;
+  height: 20px;
+  margin-left: 20px;
+  margin-right: 31px;
+}
+
+.week-field {
+  width: 180px;
+  height: 130px;
+  position: relative;
+  top: -30px;
+  background-color: var(--acc-color);
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.week-of-field {
+  width: 180px;
+  height: 26px;
+  background-color: var(--acc-color);
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  text-align: center;
+}
+
+.week-of-display-field {
+  z-index: 1000;
+  background-color: var(--acc2-color);
+  margin-right: auto;
+  margin-left: auto;
+  width: 160px;
+  height: 30px;
+  position: relative;
+  top: 15px;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.week-of-titel {
+  z-index: 1000;
+  position: relative;
+  top: 10px;
+  font-family: 'Noto Sans', sans-serif;
+  color: #757575;
+}
+
+.week-of-date {
+  position: relative;
+  top: 2px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.button-control-week {
+  position: relative;
+  top: 50px;
+  left: 35px;
+  margin-top: 10px;
+  font-family: Montserrat, sans-serif;
+  border-radius: 100%;
+  border: none;
+  width: 43px;
+  height: 43px;
+  text-align: center;
+  margin-right: 20px;
+  background-color: #196FB2;
+  color: white;
+  box-shadow:  3px 3px 8px #cacaca;
+}
+
+.button-control-week:active {
+  box-shadow: none;
+  background-color: #14598f;
+}
