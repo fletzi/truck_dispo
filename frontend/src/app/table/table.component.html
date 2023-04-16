@@ -1,6 +1,6 @@
  <div class="table-wrapper">
 
-   <table mat-table matSort matTableExporter [dataSource]="dataSource" [hiddenColumns]="hiddenColumns" >
+   <table mat-table matSort matTableExporter [dataSource]="dataSource.filteredData" [hiddenColumns]="hiddenColumns" >
 
       <ng-container *ngIf="this.showDriverName" matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Driver Name </th>

@@ -55,8 +55,8 @@ export class LoginComponent {
           }
         }
       );
+      this.loginForm.reset();
     }
-    this.loginForm.reset();
   }
 
   clearError() {

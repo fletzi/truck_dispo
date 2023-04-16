@@ -1,28 +1,44 @@
 <nav class="navbar navbar-light">
-    <div class="flex-subnav">
-      <div class="subnav-item" [routerLink]="'/my-driver-positions'" [routerLinkActive]="'subnav-item-active'" [routerLinkActiveOptions]="{ exact: true }">
-        <div class="subnav-inner">
-          <img src="assets/img/myDriverPostions.png" alt="My Driver Positions">
-          <span>My Driver Positions</span>
-        </div>
+  <div class="flex-subnav">
+    <div class="subnav-item" [routerLink]="'/my-driver-positions'" [routerLinkActive]="'subnav-item-active'" [routerLinkActiveOptions]="{ exact: true }">
+      <div class="subnav-inner">
+        <img src="assets/img/myDriverPostions.png" alt="My Driver Positions">
+        <span>My Driver Positions</span>
       </div>
-      <div class="subnav-item" href="/all-driver-positions" [routerLink]="'/all-driver-positions'" [routerLinkActive]="'subnav-item-active'">
-        <div class="subnav-inner">
-          <img src="assets/img/allDriverPositions.png" alt="All Driver Positions">
-          <span>All Driver Positions</span>
-        </div>
-      </div>
-      <div class="subnav-item" [routerLink]="'/edit-driver-position'" [routerLinkActive]="'subnav-item-active'">
-        <div class="subnav-inner">
-          <img src="assets/img/editDriverPostions.png" alt="Edit Driver Position">
-          <span>Edit Driver Position</span>
-        </div>
-      </div>
-      <div class="subnav-item" [routerLink]="'/add-contract'" [routerLinkActive]="'subnav-item-active'">
-        <div class="subnav-inner">
-          <img src="assets/img/addContract.png" alt="Add Contract">
-          <span>Add New Ride</span>
-        </div>
     </div>
-  </div>
+    <div class="subnav-item" href="/all-driver-positions" [routerLink]="'/all-driver-positions'" [routerLinkActive]="'subnav-item-active'">
+      <div class="subnav-inner">
+        <img src="assets/img/allDriverPositions.png" alt="All Driver Positions">
+        <span>All Driver Positions</span>
+      </div>
+    </div>
+    <div class="subnav-item" [routerLink]="'/edit-driver-position'" [routerLinkActive]="'subnav-item-active'">
+      <div class="subnav-inner">
+        <img src="assets/img/editDriverPostions.png" alt="Edit Driver Position">
+        <span>Edit Driver Position</span>
+      </div>
+    </div>
+    <div class="subnav-item" [routerLink]="'/add-contract'" [routerLinkActive]="'subnav-item-active'">
+      <div class="subnav-inner">
+        <img src="assets/img/addContract.png" alt="Add Contract">
+        <span>Add New Ride</span>
+      </div>
+    </div>
+    <div class="subnav-item" [routerLink]="'/maintain-mileage'" [routerLinkActive]="'subnav-item-active'">
+      <div class="subnav-inner">
+        <img src="assets/img/mileage.png" alt="Maintain mileage">
+        <span>Maintain Mileage</span>
+      </div>
+    </div>
+
+
+    <div *ngIf="isAdmin()" class="subnav-item" [routerLink]="'/maintain-newsletter'" [routerLinkActive]="'subnav-item-active'">
+      <div class="subnav-inner">
+        <img src="assets/img/newsletter.png" alt="Maintain mileage">
+        <span>Manage Newsletter</span>
+      </div>
+    </div>
+
+
+ </div>
 </nav>

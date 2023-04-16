@@ -22,6 +22,9 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatLegacyButtonModule} from "@angular/material/legacy-button";
 import {MatIconModule} from "@angular/material/icon";
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { MaintainMileageComponent } from './maintain-mileage/maintain-mileage.component';
+import { MaintainNewsletterComponent } from './maintain-newsletter/maintain-newsletter.component';
+import {MatLegacyTooltipModule} from "@angular/material/legacy-tooltip";
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -29,7 +32,9 @@ const appRoutes: Routes = [
   {path: 'my-driver-positions', component: MyDriverPositionsComponent},
   {path: 'all-driver-positions', component: AllDriverPositionsComponent},
   {path: 'edit-driver-position', component: MapComponent},
-  {path: 'add-contract', component: MapComponent}
+  {path: 'add-contract', component: MapComponent},
+  {path: 'maintain-mileage', component: MaintainMileageComponent},
+  {path: 'maintain-newsletter', component: MaintainNewsletterComponent},
 ];
 
 @NgModule({
@@ -45,6 +50,8 @@ const appRoutes: Routes = [
     TablecontrolComponent,
     LoginComponent,
     TableComponent,
+    MaintainMileageComponent,
+    MaintainNewsletterComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +64,8 @@ const appRoutes: Routes = [
     MatSortModule,
     MatLegacyButtonModule,
     MatIconModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    MatLegacyTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

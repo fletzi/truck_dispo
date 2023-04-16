@@ -22,7 +22,7 @@
         </div>
         <div class="col search-bar-wrapper">
           <form #searchForm="ngForm">
-            <input class="search-field" type="text" placeholder="Search.." name="search" [(ngModel)]="searchString">
+            <input class="search-field" type="text" placeholder="Search.." name="search" [(ngModel)]="searchString" (ngModelChange)="tableService.updateSearchString(searchString)">
             <button class="clear-button" type="submit">
               <img (click)="clearInput()" class="clear-icon" src="assets/img/clear.png" alt="clear">
             </button>

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,15 @@ export class TableService {
   private showMondayNWSource = new BehaviorSubject<boolean>(true);
   showMondayNW$ = this.showMondayNWSource.asObservable();
 
+
+  private searchString = new BehaviorSubject<string>("");
+  searchString$ = this.searchString.asObservable();
+
   constructor() { }
+
+  updateSearchString(searchString: string): void {
+    this.searchString.next(searchString);
+  }
 
   updateShowDriverName(showDriverName: boolean): void {
     this.showDriverNameSource.next(showDriverName);
@@ -77,4 +85,5 @@ export class TableService {
   updateShowMondayNW(showMondayNW: boolean): void {
     this.showMondayNWSource.next(showMondayNW);
   }
+
 }

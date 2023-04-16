@@ -1,0 +1,111 @@
+.broker-list-item {
+  font-family: 'Noto Sans', sans-serif;
+  background-color: var(--acc2-color);
+  transition: 0.3s;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+}
+
+.broker-list-item:hover {
+  background-color: var(--acc-color);
+}
+
+.broker-name {
+  font-weight: 600;
+}
+
+h1 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  font-size: 34px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
+.broker-remove img {
+  height: 24px;
+  float: right;
+}
+
+.broker-remove img:hover {
+  opacity: 60%;
+  cursor: pointer;
+}
+
+.modal-header {
+  border: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.modal-body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.btn-close {
+  position: relative;
+  top: -10px;
+}
+
+.btn-primary {
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  background-color: var(--sec-color);
+}
+
+.btn-secondary {
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+}
+
+.info-img {
+  height: 28px;
+  margin-left: 10px;
+  position: relative;
+  top: 6px;
+}
+
+.broker-add-item {
+  font-family: 'Noto Sans', sans-serif;
+  background-color: var(--acc2-color);
+  transition: 0.3s;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+}
+
+.add-img img {
+  height: 24px;
+  float: right;
+}
+
+.add-img img:hover {
+  opacity: 60%;
+  cursor: pointer;
+}
+
+.broker-input {
+  align-items: center;
+}
+
+.form-control {
+  position: relative;
+  top: 10px;
+}
+
+.form-floating input {
+  font-family: 'Noto Sans', sans-serif;
+  top: 10px;
+}
+
+.form-floating label {
+  top: 10px;
+}

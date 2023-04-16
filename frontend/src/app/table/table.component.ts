@@ -1,8 +1,9 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from '@angular/material/table';
-import { MatTableExporterDirective } from 'mat-table-exporter';
+import {MatTableExporterDirective} from 'mat-table-exporter';
 import {TableService} from "../table.service";
+import {AlertService} from "../alert.service";
 
 
 export interface Driver {
@@ -63,6 +64,66 @@ const ELEMENT_DATA: Driver[] = [
     mondayNW: 'Attu Island, AK, USA'
   },
   {
+    name: 'Jacob Martinez',
+    monday: 'Hartford, CT, USA',
+    tuesday: 'York, PA, USA',
+    wednesday: 'Lafayette, LA, USA',
+    thursday: 'Brentwood, TN, USA',
+    friday: 'Pella, IA, USA',
+    saturday: '',
+    sunday: 'Huntington Beach, CA, USA',
+    mondayNW: 'Bellingham, WA, USA'
+  },
+
+  {
+    name: 'Olivia Campbell',
+    monday: 'Newport, RI, USA',
+    tuesday: 'Savannah, GA, USA',
+    wednesday: 'Missoula, MT, USA',
+    thursday: '',
+    friday: 'Mesa, AZ, USA',
+    saturday: 'Shreveport, LA, USA',
+    sunday: 'Santa Barbara, CA, USA',
+    mondayNW: 'Anchorage, AK, USA'
+  },
+
+  {
+    name: 'Noah Wright',
+    monday: 'Buffalo, NY, USA',
+    tuesday: 'Durham, NC, USA',
+    wednesday: 'Portland, OR, USA',
+    thursday: 'Athens, GA, USA',
+    friday: 'Waco, TX, USA',
+    saturday: 'Des Moines, IA, USA',
+    sunday: 'Las Vegas, NV, USA',
+    mondayNW: ''
+  },
+
+  {
+    name: 'Ava Rodriguez',
+    monday: 'Manchester, NH, USA',
+    tuesday: 'Richmond, VA, USA',
+    wednesday: 'Fort Collins, CO, USA',
+    thursday: 'Fairfax, VA, USA',
+    friday: '',
+    saturday: 'Tallahassee, FL, USA',
+    sunday: 'Portland, ME, USA',
+    mondayNW: 'Seattle, WA, USA'
+  },
+
+  {
+    name: 'William Chen',
+    monday: 'Austin, TX, USA',
+    tuesday: 'Syracuse, NY, USA',
+    wednesday: 'Boise, ID, USA',
+    thursday: '',
+    friday: 'Las Cruces, NM, USA',
+    saturday: 'Memphis, TN, USA',
+    sunday: '',
+    mondayNW: 'Olympia, WA, USA'
+  },
+
+  {
     name: 'Daniel Hernandez',
     monday: 'Galliano, LA, USA',
     tuesday: 'Fort Kent, ME, USA',
@@ -95,7 +156,7 @@ export class TableComponent implements AfterViewInit {
   showSunday: boolean = true;
   showMondayNW: boolean = true;
 
-  constructor(private tableControlService: TableService) { }
+  constructor(private tableControlService: TableService, private  alertService: AlertService) { }
 
   ngOnInit(): void {
     this.tableControlService.showDriverName$.subscribe(showDriverName => {
@@ -157,6 +218,28 @@ export class TableComponent implements AfterViewInit {
       this.updateHiddenColumns();
       this.updateView()
     });
+
+    this.tableControlService.searchString$.subscribe(searchString => {
+      this.filterTable(searchString);
+    });
+
+  }
+
+  filterTable(searchString: string) {
+    // @ts-ignore
+    this.alertService.setMessage(null);
+    // @ts-ignore
+    this.alertService.setCode(null);
+    this.dataSource.filteredData = this.dataSource.data.filter((driver) =>
+      Object.values(driver)
+        .join("")
+        .toLowerCase()
+        .includes(searchString.toLowerCase())
+    );
+    if (this.dataSource.filteredData.length == 0) {
+      this.alertService.setMessage("No table results could be found for this search term.");
+      this.alertService.setCode(300);
+    }
   }
 
   // @ts-ignore
@@ -210,8 +293,6 @@ export class TableComponent implements AfterViewInit {
     if (!this.showMondayNW) {
       this.hiddenColumns.push(8); // mondayNW column index
     }
-
-    console.log(this.hiddenColumns);
 
   }
 

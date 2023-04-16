@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<app-subnav></app-subnav>
+<app-alert></app-alert>
+
+
+<div class="container mt-3">
+  <div class="d-flex">
+    <h1>Add new Subscriber</h1>
+    <span matTooltipClass="tooltip" matTooltip="Consent is required before adding emails to newsletter lists, as mandated by the CAN-SPAM Act. Failure to comply may result in penalties. Ensure consent is obtained before adding anyone to the newsletter list.">
+      <img class="info-img" src="assets/img/info.png" alt="info">
+    </span>
+  </div>
+  <form #addBrokerForm="ngForm" class="mb-5">
+    <div class="broker-list-wrapper">
+      <div class="broker-add-item">
+        <div class="row broker-input">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="floatingInputFirstName" placeholder="Firstname" [(ngModel)]="firstName" name="firstName">
+              <label for="floatingInputFirstName">Firstname</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="floatingInputLastName" placeholder="Lastname" [(ngModel)]="lastName" name="lastName">
+              <label for="floatingInputLastName">Lastname</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="floatingInputEmail" placeholder="Email" [(ngModel)]="email" name="email">
+              <label for="floatingInputLastName">Email</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="add-img">
+              <img (click)="addBroker()" src="assets/img/add.png" alt="add">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+  <!--List of subscribed Brokers-->
+  <div class="d-flex">
+    <h1>Current Subscribers: </h1>
+    <h2 *ngIf="brokers.length != 0">{{brokers.length}}</h2>
+  </div>
+  <div *ngFor="let broker of brokers">
+    <div class="broker-list-wrapper">
+      <div class="broker-list-item">
+        <div class="row">
+          <div class="col broker-name">
+            <span>{{broker.firstName}} {{broker.lastName}}</span>
+          </div>
+          <div class="col broker-mail">
+            <a [href]="'mailto:'+ broker.email">{{broker.email.toLocaleLowerCase()}}</a>
+          </div>
+          <div class="col broker-remove">
+            <img (click)="selectBroker(broker.email)" src="assets/img/remove_broker.png" alt="remove" data-bs-toggle="modal" data-bs-target="#confirmModal">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Confirm Removal Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmModalLabel">Confirm broker removal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove this broker from the mailing list?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="removeBroker()">remove</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,7 +27,7 @@ export class TablecontrolComponent implements OnInit {
   showMondayNW: boolean = true;
 
   // @ts-ignore
-  searchString: String;
+  searchString: string;
   selectedWeekDate: Date = new Date();
   selectedWeekDateFormatted: string = format(this.selectedWeekDate, 'MM / dd / yy');
   weekInMs = 7 * 24 * 60 * 60 * 1000; // number of milliseconds in a week
@@ -40,6 +40,7 @@ export class TablecontrolComponent implements OnInit {
   clearInput() {
     setTimeout(() => {
       this.searchForm.reset();
+      this.tableService.updateSearchString("");
     }, 1010);
   }
 
