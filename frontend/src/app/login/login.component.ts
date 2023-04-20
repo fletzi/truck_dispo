@@ -39,6 +39,8 @@ export class LoginComponent {
           // @ts-ignore
           sessionStorage.setItem('firstname', response.firstname);
           // @ts-ignore
+          sessionStorage.setItem('email', response.email);
+          // @ts-ignore
           if (response.roles.includes('ROLE_ADMIN')) {
             sessionStorage.setItem('isAdmin', 'true');
           }

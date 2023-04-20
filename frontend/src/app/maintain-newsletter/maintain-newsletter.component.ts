@@ -22,7 +22,6 @@ export class MaintainNewsletterComponent implements OnInit {
     this.getAllBrokers();
   }
 
-
   brokers: any[] = [];
 
   getAllBrokers() {

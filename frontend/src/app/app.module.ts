@@ -25,6 +25,10 @@ import { MatTableExporterModule } from 'mat-table-exporter';
 import { MaintainMileageComponent } from './maintain-mileage/maintain-mileage.component';
 import { MaintainNewsletterComponent } from './maintain-newsletter/maintain-newsletter.component';
 import {MatLegacyTooltipModule} from "@angular/material/legacy-tooltip";
+import { AddRideComponent } from './add-ride/add-ride.component';
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -32,7 +36,7 @@ const appRoutes: Routes = [
   {path: 'my-driver-positions', component: MyDriverPositionsComponent},
   {path: 'all-driver-positions', component: AllDriverPositionsComponent},
   {path: 'edit-driver-position', component: MapComponent},
-  {path: 'add-contract', component: MapComponent},
+  {path: 'add-ride', component: AddRideComponent},
   {path: 'maintain-mileage', component: MaintainMileageComponent},
   {path: 'maintain-newsletter', component: MaintainNewsletterComponent},
 ];
@@ -52,6 +56,7 @@ const appRoutes: Routes = [
     TableComponent,
     MaintainMileageComponent,
     MaintainNewsletterComponent,
+    AddRideComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,10 @@ const appRoutes: Routes = [
     MatLegacyButtonModule,
     MatIconModule,
     MatTableExporterModule,
-    MatLegacyTooltipModule
+    MatLegacyTooltipModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

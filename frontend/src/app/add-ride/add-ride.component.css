@@ -1,0 +1,45 @@
+h1 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  margin-bottom: 20px;
+}
+
+.form-wrapper {
+  border-radius: 25px;
+  overflow: hidden;
+  width: auto;
+  background-color: white;
+  box-shadow:  5px 5px 10px #cacaca;
+  height: 600px;
+}
+
+.loader-container {
+  z-index: 1001;
+  width: 100%;
+  height: 100%;
+  background-color: #196FB27C;
+}
+
+.spinner-border {
+  position: relative;
+  margin: auto;
+  left: 47%;
+  top: 45%;
+}
+
+.form-fields {
+  font-family: 'Noto Sans', sans-serif;
+  padding: 20px;
+}
+
+select {
+  border-radius: 25px;
+}
+
+::ng-deep .mdc-text-field {
+  border-radius: 25px!important;
+  background-color: transparent!important;
+  border: 1px #dee2e6 solid;
+}
+

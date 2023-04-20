@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+<app-subnav></app-subnav>
+<app-alert></app-alert>
+
+<div class="container p-0 mt-3">
+    <h1>Add New Ride</h1>
+    <div class="form-wrapper">
+      <div *ngIf="isLoading" class="loader-container">
+        <div class="spinner-border text-white" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <form #addRideForm="ngForm" class="mb-5">
+        <div class="form-fields">
+          <select #driver (change)="onSelected(driver.value)" class="form-select" aria-label="Default select example">
+            <option value="" selected disabled hidden>Please select driver</option>
+            <option *ngFor="let driver of dispatcherDrivers" value="{{driver.id}}">{{driver.firstName}}</option>
+          </select>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Choose start date</mat-label>
+            <input (dateInput)="OnStartDateChange($event.value)" matInput [matDatepicker]="startPicker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Choose end date</mat-label>
+            <input (dateInput)="OnEndDateChange($event.value)" matInput [matDatepicker]="endPicker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+
+          <p></p>
+
+        </div>
+      </form>
+    </div>
+</div>
+

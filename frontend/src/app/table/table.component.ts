@@ -381,10 +381,7 @@ export class TableComponent implements AfterViewInit {
         displayedColumns.splice(index, 1);
       }
     }
-
-    console.log(this.displayedColumns);
     this.displayedColumns = displayedColumns;
-    console.log(this.displayedColumns);
   }
 
   dataSource = new MatTableDataSource(ELEMENT_DATA);
