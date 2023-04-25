@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 
 export interface Driver {
+  dispatcher: {name: string, id: string};
   name: {id: string, name: string, trailerVIN: string, truckVIN: string};
   monday: {date: string, address1: string, status: string, id: bigint};
   tuesday: {date: string, address2: string, status: string, id: bigint};
@@ -26,15 +27,16 @@ let ELEMENT_DATA: Driver[] = [];
 
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  selector: 'app-table-all',
+  templateUrl: './table-all.component.html',
+  styleUrls: ['./table-all.component.css']
 })
 
-export class TableComponent {
+export class TableAllComponent {
 
   formattedDate:string = "";
 
+  showDispatcher: boolean = true;
   showDriverName: boolean = true;
   showEdit: boolean = true;
 
@@ -55,6 +57,7 @@ export class TableComponent {
   // @ts-ignore
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
+
   constructor(private http: HttpClient, private tableControlService: TableService, private  alertService: AlertService, private editDriverPositionService: EditDriverPositionService, private router: Router, private route: ActivatedRoute) { }
 
   /**
@@ -71,6 +74,14 @@ export class TableComponent {
         this.updateView()
         this.table.renderRows();
       });
+    });
+
+    this.tableControlService.showDispatcher$.subscribe(showDispatcher => {
+      console.log(this.showDispatcher);
+      this.showDispatcher = showDispatcher;
+      console.log(this.showDispatcher);
+      this.updateHiddenColumns();
+      this.updateView()
     });
 
     this.tableControlService.showDriverName$.subscribe(showDriverName => {
@@ -152,9 +163,8 @@ export class TableComponent {
    */
   async getTableData() {
     this.dataSource = new MatTableDataSource<Driver>();
-    let dispatcher = sessionStorage.getItem("email");
     // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
-    let url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/getTableDataWeek/${this.formattedDate}/${dispatcher}`;
+    let url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/getTableDataWeek/${this.formattedDate}`;
     let token = sessionStorage.getItem('jwt');
     try {
       const data: any = await this.http.get(url, {
@@ -165,8 +175,13 @@ export class TableComponent {
             'Content-Type': 'application/json'
           }),}).toPromise();
       const newELEMENT_DATA: Driver[] = [];
+      console.log(data);
       for (let driverData of data) {
         let driver: Driver = {
+          dispatcher: {
+            name: driverData.Dispatcher.name,
+            id: driverData.Dispatcher.id,
+          },
           name: {
             id: driverData.Driver.id,
             name: driverData.Driver.name,
@@ -279,50 +294,55 @@ export class TableComponent {
   hiddenColumns: number[] = [];
 
   updateHiddenColumns() {
-    this.hiddenColumns = [9];
+    this.hiddenColumns = [10];
+
+    if (!this.showDispatcher) {
+      this.hiddenColumns.push(0) // dispatcher name column index
+    }
 
     if (!this.showDriverName) {
-      this.hiddenColumns.push(0); // driver name column index
+      this.hiddenColumns.push(1); // driver name column index
     }
 
     if (!this.showMonday) {
-      this.hiddenColumns.push(1); // monday column index
+      this.hiddenColumns.push(2); // monday column index
     }
 
     if (!this.showTuesday) {
-      this.hiddenColumns.push(2); // tuesday column index
+      this.hiddenColumns.push(3); // tuesday column index
     }
 
     if (!this.showWednesday) {
-      this.hiddenColumns.push(3); // wednesday column index
+      this.hiddenColumns.push(4); // wednesday column index
     }
 
     if (!this.showThursday) {
-      this.hiddenColumns.push(4); // thursday column index
+      this.hiddenColumns.push(5); // thursday column index
     }
 
     if (!this.showFriday) {
-      this.hiddenColumns.push(5); // friday column index
+      this.hiddenColumns.push(6); // friday column index
     }
 
     if (!this.showSaturday) {
-      this.hiddenColumns.push(6); // saturday column index
+      this.hiddenColumns.push(7); // saturday column index
     }
 
     if (!this.showSunday) {
-      this.hiddenColumns.push(7); // sunday column index
+      this.hiddenColumns.push(8); // sunday column index
     }
 
     if (!this.showMondayNW) {
-      this.hiddenColumns.push(8); // mondayNW column index
+      this.hiddenColumns.push(9); // mondayNW column index
     }
 
   }
 
-  displayedColumns: string[] = ['name', 'address1', 'address2', 'address3', 'address4', 'address5', 'address6', 'address7', 'address8', 'edit'];
+  displayedColumns: string[] = ['dispatcher', 'name', 'address1', 'address2', 'address3', 'address4', 'address5', 'address6', 'address7', 'address8', 'edit'];
 
   updateView() {
     const displayedColumns = [
+      'dispatcher',
       'name',
       'address1',
       'address2',
@@ -334,6 +354,13 @@ export class TableComponent {
       'address8',
       'edit'
     ];
+
+    if (!this.showDispatcher) {
+      const index = displayedColumns.indexOf('dispatcher');
+      if (index >= 0) {
+        displayedColumns.splice(index, 1);
+      }
+    }
 
     if (!this.showDriverName) {
       const index = displayedColumns.indexOf('name');

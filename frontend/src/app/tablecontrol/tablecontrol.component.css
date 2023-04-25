@@ -204,3 +204,9 @@
   box-shadow: none;
   background-color: #14598f;
 }
+
+.dispatcher-button {
+  margin-left: 12px;
+  position: relative;
+  top: -5px;
+}

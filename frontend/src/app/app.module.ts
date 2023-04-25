@@ -32,6 +32,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
 import {MatLegacyAutocompleteModule} from "@angular/material/legacy-autocomplete";
 import { EditDriverPositionComponent } from './edit-driver-position/edit-driver-position.component';
+import { TableAllComponent } from './table-all/table-all.component';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
     MaintainNewsletterComponent,
     AddRideComponent,
     EditDriverPositionComponent,
+    TableAllComponent,
   ],
   imports: [
     BrowserModule,

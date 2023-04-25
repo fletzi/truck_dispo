@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {format} from "date-fns";
 import {TableService} from "../table.service"
+import {AllDriverPositionsService} from "../all-driver-positions.service";
 
 @Component({
   selector: 'app-tablecontrol',
@@ -10,12 +11,14 @@ import {TableService} from "../table.service"
 })
 export class TablecontrolComponent implements OnInit {
 
-  constructor(public tableService: TableService) { }
+  constructor(public tableService: TableService, private allDriverPositionsService: AllDriverPositionsService) { }
 
   // @ts-ignore
   @ViewChild('searchForm', {static: false}) searchForm: NgForm;
   showDriverName: boolean = true;
   showEdit: boolean = true;
+  showDispatcher: boolean = true;
+  displayDispatcherBtn: boolean = false;
 
   showMonday: boolean = true;
   showTuesday: boolean = true;
@@ -25,6 +28,8 @@ export class TablecontrolComponent implements OnInit {
   showSaturday: boolean = true;
   showSunday: boolean = true;
   showMondayNW: boolean = true;
+
+  showingAllDrivers:boolean = false;
 
   // @ts-ignore
   searchString: string;
@@ -39,6 +44,12 @@ export class TablecontrolComponent implements OnInit {
     this.selectedWeekDateFormatted = format(this.selectedWeekDateEarly, 'MM / dd / yy');
     this.selectedWeekDate = this.selectedWeekDateEarly;
     this.tableService.updateSelectedMonday(this.selectedWeekDate);
+    this.allDriverPositionsService.showingAllDrivers$.subscribe(showingAllDrivers => {
+      this.showingAllDrivers = showingAllDrivers;
+    });
+    if (this.showingAllDrivers) {
+      this.displayDispatcherBtn = true;
+    }
   }
 
   clearInput() {

@@ -6,6 +6,9 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class TableService {
 
+  private showDispatcherSource = new BehaviorSubject<boolean>(true);
+  showDispatcher$ = this.showDispatcherSource.asObservable();
+
   private showDriverNameSource = new BehaviorSubject<boolean>(true);
   showDriverName$ = this.showDriverNameSource.asObservable();
 
@@ -50,9 +53,12 @@ export class TableService {
 
   constructor() { }
 
+  updateShowDispatcher(showDispatcherSource: boolean): void {
+    this.showDispatcherSource.next(showDispatcherSource);
+  }
+
   updateSelectedMonday(selectedMondaySource: Date): void {
     this.selectedMondaySource.next(selectedMondaySource);
-    console.log("updated selected Monday "+selectedMondaySource);
   }
 
   updateSelectedWeekDateFormatted(selectedWeekDateFormattedSource: Date): void {

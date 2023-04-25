@@ -1,0 +1,106 @@
+<div class="table-wrapper">
+
+  <table mat-table matSort matTableExporter (matSortChange)="sortColumn($event)" [dataSource]="dataSource.filteredData" [hiddenColumns]="hiddenColumns">
+
+    <ng-container *ngIf="this.showDispatcher" matColumnDef="dispatcher">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="dispatcher"> Dispatcher </th>
+      <td mat-cell *matCellDef="let driver" class="driver-td"> {{ driver.dispatcher.name }} </td>
+    </ng-container>
+
+    <ng-container *ngIf="this.showDriverName" matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Driver Name </th>
+      <td mat-cell *matCellDef="let driver" class="driver-td"> {{ driver.name.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address1">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address1"> Monday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event, driver.name, driver.monday)"
+          [ngClass]="{
+            'status-green': driver.monday.status == 'green',
+            'status-red': driver.monday.status == 'red',
+            'status-blue': driver.monday.status == 'blue'}">
+        {{ driver.monday.address1 }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address2">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address2"> Tuesday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.tuesday)"
+          [ngClass]="{
+            'status-green': driver.tuesday.status == 'green',
+            'status-red': driver.tuesday.status == 'red',
+            'status-blue': driver.tuesday.status == 'blue'}">
+        {{ driver.tuesday.address2  }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address3">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address3"> Wednesday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.wednesday)"
+          [ngClass]="{
+            'status-green': driver.wednesday.status == 'green',
+            'status-red': driver.wednesday.status == 'red',
+            'status-blue': driver.wednesday.status == 'blue'}">
+        {{ driver.wednesday.address3  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address4">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address4"> Thursday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.thursday)"
+          [ngClass]="{
+            'status-green': driver.thursday.status == 'green',
+            'status-red': driver.thursday.status == 'red',
+            'status-blue': driver.thursday.status == 'blue'}">
+        {{ driver.thursday.address4  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address5">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address5"> Friday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.friday)"
+          [ngClass]="{
+            'status-green': driver.friday.status == 'green',
+            'status-red': driver.friday.status == 'red',
+            'status-blue': driver.friday.status == 'blue'}">
+        {{ driver.friday.address5  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address6">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address6"> Saturday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.saturday)"
+          [ngClass]="{
+            'status-green': driver.saturday.status == 'green',
+            'status-red': driver.saturday.status == 'red',
+            'status-blue': driver.saturday.status == 'blue'}">
+        {{ driver.saturday.address6  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address7">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address7"> Sunday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.sunday)"
+          [ngClass]="{
+            'status-green': driver.sunday.status == 'green',
+            'status-red': driver.sunday.status == 'red',
+            'status-blue': driver.sunday.status == 'blue'}">
+        {{ driver.sunday.address7 }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address8">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="address8"> Monday </th>
+      <td mat-cell *matCellDef="let driver" (click)="onCellClicked($event,driver.name,driver.mondayNW)"
+          [ngClass]="{
+            'status-green': driver.mondayNW.status == 'green',
+            'status-red': driver.mondayNW.status == 'red',
+            'status-blue': driver.mondayNW.status == 'blue'}">
+        {{ driver.mondayNW.address8  }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> <span *ngIf="isAdmin()"> <img (click)="exportTable()" class="export-img" src="assets/img/export.png" alt="export"> </span> </th>
+      <td mat-cell *matCellDef="let driver"> <button class="edit-button" mat-icon-button (click)="editDriverPositon()"><mat-icon class="edit-icon">edit</mat-icon></button> </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+</div>

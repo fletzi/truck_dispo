@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { AlertService } from "../alert.service";
 import { InfocardsService } from "../infocards.service";
 import {TableService} from "../table.service";
+import {AllDriverPositionsService} from "../all-driver-positions.service";
 
 @Component({
   selector: 'app-map',
@@ -12,7 +13,8 @@ import {TableService} from "../table.service";
 })
 export class MapComponent implements OnInit {
 
-
+  url:string = "";
+  showingAllDrivers:boolean = false;
   isLoading = false;
   // @ts-ignore
   map: google.maps.Map;
@@ -20,21 +22,20 @@ export class MapComponent implements OnInit {
   currentInfoWindow: google.maps.InfoWindow = null;
   markers: google.maps.Marker[] = [];
 
-
-  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService, private tableControlService: TableService) {}
+  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService, private tableControlService: TableService, private allDriverPositionsService: AllDriverPositionsService) {}
 
   // @ts-ignore
   myDate: Date;
-  formattedDate: string = "";
+  formattedDate: string = "MM / DD / YY";
   drivers: any[] = [];
 
+
+
   async getAllDrivers(): Promise<void> {
-    let formattedDate = format(this.myDate, 'yyyy-MM-dd');
     // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
-    let url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/getAllDrivers/${formattedDate}`;
     let token = sessionStorage.getItem('jwt');
     try {
-      const data: any = await this.http.get(url, {
+      const data: any = await this.http.get(this.url, {
         headers: new HttpHeaders(
           {
             'Authorization': 'Bearer ' + token,
@@ -83,16 +84,37 @@ export class MapComponent implements OnInit {
 
   // Initializes the Google Maps "Map" after this component is initialized
   ngOnInit() {
-    this.tableControlService.selectedMonday$.subscribe(selectedMonday => {
-      this.myDate = selectedMonday;
-      this.formattedDate = format(this.myDate, 'MM / dd / yy');
-      console.log("received new monday "+selectedMonday)
-      this.initMap();
-    });
+    this.isLoading = true;
+    setTimeout(() => {
+      console.log("waiting")
+      this.allDriverPositionsService.showingAllDrivers$.subscribe(showingAllDrivers => {
+        this.showingAllDrivers = showingAllDrivers;
+      });
+
+      this.tableControlService.selectedMonday$.subscribe(selectedMonday => {
+        console.log("!!SelectedMonday delivered by Service: "+selectedMonday);
+        this.myDate = selectedMonday;
+        this.formattedDate = format(this.myDate, 'MM / dd / yy');
+        console.log("received new monday "+selectedMonday)
+
+        this.initMap();
+      });
+
+
+    }, 1000);
+
+
   }
 
   // Initialisiert die Google Maps "Map"
   async initMap(): Promise<void>{
+    let formattedDate = format(this.myDate, 'yyyy-MM-dd');
+    let dispatcher = sessionStorage.getItem("email");
+    if (this.showingAllDrivers) {
+      this.url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/getAllDrivers/${formattedDate}`;
+    } else {
+      this.url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/getAllDriversFromDispatcher/${formattedDate}/${dispatcher}`;
+    }
     this.drivers = [];
     this.markers = [];
     this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {

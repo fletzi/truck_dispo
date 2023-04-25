@@ -1,0 +1,78 @@
+.table-wrapper {
+  width: auto;
+  overflow: hidden!important;
+  border-radius: 35px;
+  margin: 10px 20px;
+  box-shadow:  5px 5px 10px #cacaca;
+}
+
+table {
+  background-color: transparent!important;
+}
+
+.table-head {
+  color: white;
+}
+
+.status-red {
+  background-color: rgba(205, 83, 59, 0.35);
+}
+
+.status-green {
+  background-color: rgba(79, 178, 134, 0.35);
+}
+
+.status-blue {
+  background-color: rgba(25, 111, 178, 0.35);
+}
+
+
+.selected-cell {
+  outline-offset: -2px;
+  outline: #777777 2px solid;
+}
+
+th {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--sec-color)!important;
+  color: white;
+}
+
+td {
+  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #f5f5f5;
+  color: black;
+}
+
+.driver-td {
+  cursor: unset;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #e8e8e8;
+  font-weight: 800;
+}
+
+.export-img {
+  height: 30px;
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.export-img:hover {
+  opacity: 60%;
+}
+
+.edit-icon {
+  transform: scale(0.8) translateY(-4px);
+  color: white;
+}
+
+.edit-icon:hover {
+  color: #cccccc;
+}
+
+.edit-button {
+  width: 35px;
+  height: 35px;
+  background-color: #196FB2;
+}

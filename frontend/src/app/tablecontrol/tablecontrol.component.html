@@ -56,6 +56,9 @@
           <button class="button-control-day" (click)="showMondayNW = !showMondayNW; tableService.updateShowMondayNW(showMondayNW)" [ngClass]="{ 'button-active' : showMondayNW, 'button-inactive' : !showMondayNW }">Mo</button>
         </div>
       </div>
+      <div *ngIf="displayDispatcherBtn"  class="row">
+        <button class="button-control dispatcher-button" (click)="showDispatcher = !showDispatcher; tableService.updateShowDispatcher(showDispatcher)" [ngClass]="{ 'button-active' : showDispatcher, 'button-inactive' : !showDispatcher }">Dispatcher</button>
+      </div>
     </div>
   </div>
 </div>
