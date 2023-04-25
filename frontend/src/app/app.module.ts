@@ -15,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfocardComponent } from './infocard/infocard.component';
 import { TablecontrolComponent } from './tablecontrol/tablecontrol.component';
 import { LoginComponent } from './login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TableComponent } from './table/table.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
@@ -29,13 +29,16 @@ import { AddRideComponent } from './add-ride/add-ride.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
+import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
+import {MatLegacyAutocompleteModule} from "@angular/material/legacy-autocomplete";
+import { EditDriverPositionComponent } from './edit-driver-position/edit-driver-position.component';
 
 const appRoutes: Routes = [
   {path: '', component: MyDriverPositionsComponent},
   {path: 'login', component: LoginComponent},
   {path: 'my-driver-positions', component: MyDriverPositionsComponent},
   {path: 'all-driver-positions', component: AllDriverPositionsComponent},
-  {path: 'edit-driver-position', component: MapComponent},
+  {path: 'edit-driver-position', component: EditDriverPositionComponent},
   {path: 'add-ride', component: AddRideComponent},
   {path: 'maintain-mileage', component: MaintainMileageComponent},
   {path: 'maintain-newsletter', component: MaintainNewsletterComponent},
@@ -57,6 +60,7 @@ const appRoutes: Routes = [
     MaintainMileageComponent,
     MaintainNewsletterComponent,
     AddRideComponent,
+    EditDriverPositionComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,10 @@ const appRoutes: Routes = [
     MatLegacyTooltipModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMatTimepickerModule,
+    MatLegacyAutocompleteModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { format } from 'date-fns';
 import { AlertService } from "../alert.service";
 import { InfocardsService } from "../infocards.service";
+import {TableService} from "../table.service";
 
 @Component({
   selector: 'app-map',
@@ -20,9 +21,11 @@ export class MapComponent implements OnInit {
   markers: google.maps.Marker[] = [];
 
 
-  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService) {}
+  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService, private tableControlService: TableService) {}
 
-  myDate: Date = new Date();
+  // @ts-ignore
+  myDate: Date;
+  formattedDate: string = "";
   drivers: any[] = [];
 
   async getAllDrivers(): Promise<void> {
@@ -39,12 +42,12 @@ export class MapComponent implements OnInit {
             'Content-Type': 'application/json'
           }),}).toPromise();
       this.drivers = data;
-      console.log(this.drivers);
+      console.log(data)
       if (data.length == 1) {
-        this.alertService.setMessage(data.length + " driver position has been updated.");
+        this.alertService.setMessage("driver position has been updated.");
       }
       else {
-        this.alertService.setMessage(data.length + " driver positions have been updated.");
+        this.alertService.setMessage("driver positions have been updated.");
       }
       this.alertService.setCode(200); // Hier setzen wir den errorCode auf den Standardwert 200 für eine erfolgreiche Anfrage
     } catch (error) {
@@ -66,6 +69,7 @@ export class MapComponent implements OnInit {
     const newDate = new Date(this.myDate);
     newDate.setDate(newDate.getDate() + 1);
     this.myDate = newDate;
+    this.formattedDate = format(this.myDate, 'MM / dd / yy');
     this.initMap();
   }
 
@@ -73,16 +77,24 @@ export class MapComponent implements OnInit {
     const newDate = new Date(this.myDate);
     newDate.setDate(newDate.getDate() - 1);
     this.myDate = newDate;
+    this.formattedDate = format(this.myDate, 'MM / dd / yy');
     this.initMap();
   }
 
   // Initializes the Google Maps "Map" after this component is initialized
   ngOnInit() {
-    this.initMap();
+    this.tableControlService.selectedMonday$.subscribe(selectedMonday => {
+      this.myDate = selectedMonday;
+      this.formattedDate = format(this.myDate, 'MM / dd / yy');
+      console.log("received new monday "+selectedMonday)
+      this.initMap();
+    });
   }
 
   // Initialisiert die Google Maps "Map"
   async initMap(): Promise<void>{
+    this.drivers = [];
+    this.markers = [];
     this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
       center: {lat: 39, lng: -101.299591}, // set map center to the center of the USA
       zoom: 4, // set the initial zoom to 4
@@ -94,7 +106,6 @@ export class MapComponent implements OnInit {
 
     // adds markers to all addresses given to the function
     this.isLoading = true;
-
     await this.getAllDrivers();
 
     this.addMarkersToMap().finally(() => {
@@ -137,84 +148,88 @@ export class MapComponent implements OnInit {
   cache: {[address: string]: google.maps.LatLng} = {};
 
   async addMarkersToMap(): Promise<void> {
-    // Remove existing markers from the map
-    this.markers?.forEach(marker => marker.setMap(null));
-    this.markers = [];
-
     try {
       for (const driver of this.drivers) {
-        const latLng = await this.getLatLngFromAddress(driver.address);
-        const marker = new google.maps.Marker({
-          position: latLng,
-          map: this.map,
-          title: driver.firstName + " " + driver.lastName,
-        });
-
-        this.markers.push(marker);
-
-        let statusString: string = "";
-        const deliveryDate = new Date(driver.deliveryTime);
-        const deliveryTimeFormatted = deliveryDate.toLocaleString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+        if (driver.address != "") {
+          const latLng = await this.getLatLngFromAddress(driver.address);
+          let marker = new google.maps.Marker({
+            position: latLng,
+            map: this.map,
+            title: driver.firstName + " " + driver.lastName,
+          });
+          this.markers.push(marker);
 
 
-        if (driver.status == "green") {
-          statusString = "available"
-        } else if (driver.status == "yellow") {
-          statusString = "unavailable"
-        } else if (driver.status == "blue") {
-          statusString = "vacation"
-        } else {
-          statusString = "unknown"
-        }
+          let statusString: string = "";
+          const deliveryDate = new Date(driver.deliveryTime);
+          const deliveryTimeFormatted = deliveryDate.toLocaleString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
 
-        let driverName: string = driver.firstName +' '+ driver.lastName;
 
-        const contentString =
-          '<div class="map-info">\n' +
-          '  <span>'+ driverName +'</span>\n' +
-          '  <table class="table">\n' +
-          '    <thead>\n' +
-          '    <tr>\n' +
-          '      <th scope="col">Location:</th>\n' +
-          '      <td>'+ driver.address +'</td>\n' +
-          '    </tr>\n' +
-          '    </thead>\n' +
-          '    <tbody>\n' +
-          '    <tr>\n' +
-          '      <th scope="row">Clearing Time:</th>\n' +
-          '      <td>'+ deliveryTimeFormatted +'</td>\n' +
-          '    </tr>\n' +
-          '    <tr>\n' +
-          '      <th scope="row">Status:</th>\n' +
-          '      <td>'+ statusString +'</td>\n' +
-          '    </tr>\n' +
-          '    <tr>\n' +
-          '      <th scope="row">Truck:</th>\n' +
-          '      <td>'+ driver.truckVIN +'</td>\n' +
-          '    </tr>\n' +
-          '    <tr>\n' +
-          '      <th scope="row">Trailer:</th>\n' +
-          '      <td>'+ driver.trailerVIN +'</td>\n' +
-          '    </tr>\n' +
-          '    </tbody>\n' +
-          '  </table>\n' +
-          '\n' +
-          '</div>';
-
-        const infowindow = new google.maps.InfoWindow({
-          content: contentString,
-        });
-
-        marker.addListener("click", () => {
-          if (this.currentInfoWindow) {
-            this.currentInfoWindow.close();
+          if (driver.status == "green") {
+            statusString = "available"
+          } else if (driver.status == "red") {
+            statusString = "unavailable"
+          } else if (driver.status == "blue") {
+            statusString = "vacation"
+          } else {
+            statusString = "unknown"
           }
-          infowindow.open(this.map, marker);
-          this.currentInfoWindow = infowindow;
-          this.infocardsService.setDetails(driver.firstName + " " + driver.lastName, driver.address, statusString, deliveryTimeFormatted, driver.truckVIN, driver.rideNumber.toString(), driver.trailerVIN);
 
-          //add code for selection of drive in table / view on side panel
-        });
+          let driverName: string = driver.firstName + ' ' + driver.lastName;
+
+          const contentString =
+            '<div class="map-info">\n' +
+            '  <span>' + driverName + '</span>\n' +
+            '  <table class="table">\n' +
+            '    <thead>\n' +
+            '    <tr>\n' +
+            '      <th scope="col">Location:</th>\n' +
+            '      <td>' + driver.address + '</td>\n' +
+            '    </tr>\n' +
+            '    </thead>\n' +
+            '    <tbody>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Clearing Time:</th>\n' +
+            '      <td>' + deliveryTimeFormatted + '</td>\n' +
+            '    </tr>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Status:</th>\n' +
+            '      <td>' + statusString + '</td>\n' +
+            '    </tr>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Truck:</th>\n' +
+            '      <td>' + driver.truckVIN + '</td>\n' +
+            '    </tr>\n' +
+            '    <tr>\n' +
+            '      <th scope="row">Trailer:</th>\n' +
+            '      <td>' + driver.trailerVIN + '</td>\n' +
+            '    </tr>\n' +
+            '    </tbody>\n' +
+            '  </table>\n' +
+            '\n' +
+            '</div>';
+
+          const infowindow = new google.maps.InfoWindow({
+            content: contentString,
+          });
+
+          marker.addListener("click", () => {
+            if (this.currentInfoWindow) {
+              this.currentInfoWindow.close();
+            }
+            infowindow.open(this.map, marker);
+            this.currentInfoWindow = infowindow;
+            this.infocardsService.setDetails(driver.firstName + " " + driver.lastName, driver.address, statusString, deliveryTimeFormatted, driver.truckVIN, driver.rideNumber.toString(), driver.trailerVIN);
+
+            //add code for selection of drive in table / view on side panel
+          });
+        }
       }
     } catch (error) {
       this.alertService.setMessage("An error occurred while adding markers to the map");

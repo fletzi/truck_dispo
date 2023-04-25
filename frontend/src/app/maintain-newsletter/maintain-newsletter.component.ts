@@ -49,7 +49,10 @@ export class MaintainNewsletterComponent implements OnInit {
         )
         .subscribe((brokers) => {
           this.brokers = brokers;
-          console.log(this.brokers);
+          if (brokers.length == 0) {
+            this.alertService.setMessage("No existing subscribers to the newsletter were found.");
+            this.alertService.setCode(400);
+          }
         });
     } catch (error) {
       console.error('HTTP Request was not successful', error);

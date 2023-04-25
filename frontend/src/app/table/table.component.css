@@ -14,8 +14,22 @@ table {
   color: white;
 }
 
+.status-red {
+  background-color: rgba(205, 83, 59, 0.35);
+}
+
+.status-green {
+  background-color: rgba(79, 178, 134, 0.35);
+}
+
+.status-blue {
+  background-color: rgba(25, 111, 178, 0.35);
+}
+
+
 .selected-cell {
-  background-color: rgb(213, 237, 255);
+  outline-offset: -2px;
+  outline: #777777 2px solid;
 }
 
 th {

@@ -1,0 +1,132 @@
+<app-navbar></app-navbar>
+<app-subnav></app-subnav>
+<app-alert></app-alert>
+
+<div class="container p-0 mt-3">
+  <h1>Edit Driver Position</h1>
+  <div class="form-wrapper">
+    <div *ngIf="isLoading" class="loader-container">
+      <div class="spinner-border text-white" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="form-item ms-4">
+      <div class="row mt-3 mb-3">
+        <div class="current-driver">
+          You are editing the position of <span class="current-driver-var">{{ driverName }}</span> for <span
+          class="current-driver-var">{{ selectedDateFormatted }}</span>.
+        </div>
+      </div>
+      <div class="row mt-3 mb-2">
+        <div class="col-4">
+          <span class="item-titel current-item-titel">Current City</span>
+        </div>
+        <div class="col-4">
+          <span class="item-titel current-item-titel">Current State</span>
+        </div>
+        <div class="col-4">
+          <span class="item-titel current-item-titel">Current Status</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 d-flex">
+          <div class="current-item">
+            {{ currentCity }}
+          </div>
+          <img src="assets/img/keepValue.png" alt="keep" class="keep-value" (click)="keepCurrentCity()">
+        </div>
+        <div class="col-4 d-flex">
+          <div class="current-item">
+            {{ currentState }}
+          </div>
+          <img src="assets/img/keepValue.png" alt="keep" class="keep-value" (click)="keepCurrentState()">
+        </div>
+        <div class="col-4 d-flex">
+          <div class="current-item" [ngClass]="{
+                                  'option-available': this.currentStatus == 'available',
+                                  'option-unavailable': this.currentStatus == 'unavailable',
+                                  'option-vacation': this.currentStatus == 'vacation'
+                                 }">
+            {{ currentStatus }}
+          </div>
+          <img src="assets/img/keepValue.png" alt="keep" class="keep-value" (click)="keepCurrentStatus()">
+        </div>
+      </div>
+
+      <div class="row mt-5 mb-2">
+        <div class="col-4">
+          <span class="item-titel">New City</span>
+        </div>
+        <div class="col-4">
+          <span class="item-titel">New State</span>
+        </div>
+        <div class="col-4">
+          <span class="item-titel">New Status</span>
+        </div>
+      </div>
+      <form #editDriverPositionForm="ngForm" class="mb-5">
+        <div class="row">
+          <div class="col-4 d-flex">
+            <mat-form-field class="mat-width" appearance="fill">
+              <mat-label>Select New City</mat-label>
+              <input type="text"
+                     placeholder="Enter New City"
+                     matInput
+                     [formControl]="editDriverPostionControlCity"
+                     [matAutocomplete]="auto1"
+                     [(ngModel)]="selectedCity"
+                     name="selectedCity">
+              <mat-autocomplete #auto1="matAutocomplete">
+                <mat-option *ngFor="let city of filteredCity | async" [value]="city">
+                  {{city}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-4 d-flex">
+            <mat-form-field class="mat-width" appearance="fill">
+              <mat-label>Select New State</mat-label>
+              <input type="text"
+                     placeholder="Enter New State"
+                     matInput
+                     [formControl]="editDriverPostionControlState"
+                     [matAutocomplete]="auto2"
+                     [(ngModel)]="selectedState"
+                     name="selectedState">
+              <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let state of filteredState | async" [value]="state">
+                  {{state}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-4 d-flex">
+            <select #status class="select-status" [(ngModel)]="selectedStatus"
+                    name="selectedDriver" [ngClass]="{
+                                  'option-available': selectedStatus == 'available',
+                                  'option-unavailable': selectedStatus == 'unavailable',
+                                  'option-vacation': selectedStatus == 'vacation'
+                                 }">
+              <option value="" selected disabled hidden>Please select new status</option>
+              <option *ngFor="let status of statuss;"
+                      value="{{status}}"
+                      [ngClass]="{
+                                  'option-available': status == 'available',
+                                  'option-unavailable': status == 'unavailable',
+                                  'option-vacation': status == 'vacation'
+                                 }">
+                {{status}}
+              </option>
+            </select>
+          </div>
+
+          <div class="buttons">
+            <button (click)="clickEditDriverPosition()" class="edit-position-btn add-btn">update position</button>
+            <button (click)="clearFields()" class="edit-position-btn clear-btn me-3">clear</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

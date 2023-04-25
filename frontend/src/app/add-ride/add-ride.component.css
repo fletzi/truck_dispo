@@ -5,13 +5,20 @@ h1 {
   margin-bottom: 20px;
 }
 
+h2 {
+  font-family: Montserrat, sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
 .form-wrapper {
   border-radius: 25px;
   overflow: hidden;
   width: auto;
   background-color: white;
   box-shadow:  5px 5px 10px #cacaca;
-  height: 600px;
+  height: 500px;
 }
 
 .loader-container {
@@ -31,15 +38,98 @@ h1 {
 .form-fields {
   font-family: 'Noto Sans', sans-serif;
   padding: 20px;
+  overflow: hidden;
 }
 
 select {
   border-radius: 25px;
 }
 
-::ng-deep .mdc-text-field {
-  border-radius: 25px!important;
-  background-color: transparent!important;
-  border: 1px #dee2e6 solid;
+.ride-input {
+  border-radius: 25px;
+  border: 1px solid #dee2e6;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+  height: 56px;
+  background: url(src/assets/img/clock_clearing_time.png) no-repeat scroll right;
+  background-size: 30px 30px;
+  background-position-x: 93%;
 }
 
+.ride-input:active {
+  outline: 1px solid #93BDFA!important;
+}
+
+.ride-input:focus-visible {
+  outline: 4px solid rgba(147, 189, 250, 0.6) !important;
+}
+
+.time-wrapper {
+  border-radius: 25px;
+  height: auto;
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  width: 98%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.time-item {
+  width: 212px;
+}
+
+.control-wrapper {
+  border-radius: 25px;
+  height: auto;
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  width: 48%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-option {
+  background-color: white!important;
+  border: 1px solid #dee2e6!important;
+}
+
+.ride-btn {
+  margin-top: 30px;
+  font-family: Montserrat, sans-serif;
+  border-radius: 25px;
+  border: none;
+  width: 120px;
+  height: 30px;
+  text-align: center;
+  float: right;
+}
+
+.ride-btn:hover {
+  opacity: 90%;
+}
+
+.add-btn {
+  background-color: #196FB2;
+  width: 140px;
+  color: white;
+  box-shadow:  3px 3px 8px #cacaca;
+}
+
+.add-btn:active {
+  box-shadow: none;
+  background-color: #145788;
+}
+
+.clear-btn {
+  background-color: var(--acc-color);
+  color: black;
+  box-shadow:  3px 3px 8px #cacaca;
+}
+
+.clear-btn:active{
+  background-color: #d5d9de;
+  box-shadow:  none;
+}

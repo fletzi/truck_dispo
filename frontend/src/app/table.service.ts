@@ -40,7 +40,24 @@ export class TableService {
   private searchString = new BehaviorSubject<string>("");
   searchString$ = this.searchString.asObservable();
 
+  // @ts-ignore
+  private selectedWeekDateSource = new BehaviorSubject<Date>();
+  selectedWeekDate$ = this.selectedWeekDateSource.asObservable();
+
+  // @ts-ignore
+  private selectedMondaySource = new BehaviorSubject<Date>();
+  selectedMonday$ = this.selectedMondaySource.asObservable();
+
   constructor() { }
+
+  updateSelectedMonday(selectedMondaySource: Date): void {
+    this.selectedMondaySource.next(selectedMondaySource);
+    console.log("updated selected Monday "+selectedMondaySource);
+  }
+
+  updateSelectedWeekDateFormatted(selectedWeekDateFormattedSource: Date): void {
+    this.selectedWeekDateSource.next(selectedWeekDateFormattedSource);
+  }
 
   updateSearchString(searchString: string): void {
     this.searchString.next(searchString);

@@ -28,13 +28,17 @@ export class TablecontrolComponent implements OnInit {
 
   // @ts-ignore
   searchString: string;
-  selectedWeekDate: Date = new Date();
-  selectedWeekDateFormatted: string = format(this.selectedWeekDate, 'MM / dd / yy');
+  // @ts-ignore
+  selectedWeekDate: Date;
+  selectedWeekDateEarly: Date = new Date;
+  selectedWeekDateFormatted: string = "";
   weekInMs = 7 * 24 * 60 * 60 * 1000; // number of milliseconds in a week
 
   ngOnInit(): void {
-    this.selectedWeekDate.setDate(this.selectedWeekDate.getDate() - (this.selectedWeekDate.getDay() || 7) + 1);
-    this.selectedWeekDateFormatted = format(this.selectedWeekDate, 'MM / dd / yy');
+    this.selectedWeekDateEarly.setDate(this.selectedWeekDateEarly.getDate() - (this.selectedWeekDateEarly.getDay() || 7) + 1);
+    this.selectedWeekDateFormatted = format(this.selectedWeekDateEarly, 'MM / dd / yy');
+    this.selectedWeekDate = this.selectedWeekDateEarly;
+    this.tableService.updateSelectedMonday(this.selectedWeekDate);
   }
 
   clearInput() {
@@ -48,12 +52,14 @@ export class TablecontrolComponent implements OnInit {
     const previousWeekDate = new Date(this.selectedWeekDate.getTime() - this.weekInMs);
     this.selectedWeekDate.setTime(previousWeekDate.getTime());
     this.selectedWeekDateFormatted = format(this.selectedWeekDate, 'MM / dd / yy');
+    this.tableService.updateSelectedMonday(this.selectedWeekDate);
   }
 
   goToNextWeek() {
     const previousWeekDate = new Date(this.selectedWeekDate.getTime() + this.weekInMs);
     this.selectedWeekDate.setTime(previousWeekDate.getTime());
     this.selectedWeekDateFormatted = format(this.selectedWeekDate, 'MM / dd / yy');
+    this.tableService.updateSelectedMonday(this.selectedWeekDate);
   }
 
 }

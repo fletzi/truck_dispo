@@ -15,8 +15,8 @@
           </div>
           <div class="week-field">
             <div class="d-flex">
-              <button class="button-control-week" (click)="goToPreviousWeek()">-</button>
-              <button class="button-control-week" (click)="goToNextWeek()">+</button>
+              <button class="button-control-week" (click)="goToPreviousWeek(); tableService.updateSelectedWeekDateFormatted(selectedWeekDate)">-</button>
+              <button class="button-control-week" (click)="goToNextWeek(); tableService.updateSelectedWeekDateFormatted(selectedWeekDate)">+</button>
             </div>
           </div>
         </div>

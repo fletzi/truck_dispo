@@ -13,28 +13,132 @@
 
       <form #addRideForm="ngForm" class="mb-5">
         <div class="form-fields">
-          <select #driver (change)="onSelected(driver.value)" class="form-select" aria-label="Default select example">
-            <option value="" selected disabled hidden>Please select driver</option>
-            <option *ngFor="let driver of dispatcherDrivers" value="{{driver.id}}">{{driver.firstName}}</option>
-          </select>
+          <div class="row">
+            <div class="col">
+              <h2>Driver</h2>
+              <select #driver (change)="onDriverSelected(driver.value)" class="form-select" [(ngModel)]="selectedDriver" name="selectedDriver">
+                <option value="" selected disabled hidden>Please select driver</option>
+                <option *ngFor="let driver of dispatcherDrivers" value="{{driver.id}}">{{driver.firstName}} {{driver.lastName}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col">
+              <h2 >Start</h2>
+            </div>
+            <div class="col">
+              <h2 >End</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="control-wrapper">
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field class="time-item" appearance="fill">
+                    <mat-label>Choose start date</mat-label>
+                    <input (dateInput)="OnStartDateChange($event.value)" matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" name="startDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              <div class="row mt-3">
+                <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Start City</mat-label>
+                    <input type="text"
+                           placeholder="Enter Start City"
+                           matInput
+                           [formControl]="addRideControl"
+                           [matAutocomplete]="auto1"
+                           [(ngModel)]="startCity"
+                           name="startCity">
+                    <mat-autocomplete #auto1="matAutocomplete">
+                      <mat-option *ngFor="let city of filteredStartCity | async" [value]="city">
+                        {{city}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Start State</mat-label>
+                    <input type="text"
+                           placeholder="Enter Start State"
+                           matInput
+                           [formControl]="addRideControl"
+                           [matAutocomplete]="auto2"
+                           [(ngModel)]="startState"
+                           name="startState">
+                    <mat-autocomplete #auto2="matAutocomplete">
+                      <mat-option *ngFor="let state of filteredStartState | async" [value]="state">
+                        {{state}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="control-wrapper">
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field class="time-item" appearance="fill">
+                    <mat-label>Choose end date</mat-label>
+                    <input (dateInput)="OnEndDateChange($event.value)" matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" name="endDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <input readonly class="ride-input" placeholder="Clearing Time" [ngxMatTimepicker]="timePicker" [format]="24" [(ngModel)]="clearingTime" name="clearingTime">
+                  <ngx-mat-timepicker (timeSet)="timeSet($event)" #timePicker></ngx-mat-timepicker>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>End City</mat-label>
+                    <input type="text"
+                           placeholder="Enter End City"
+                           matInput
+                           [formControl]="addRideControl"
+                           [matAutocomplete]="auto3"
+                           [(ngModel)]="endCity"
+                           name="endCity">
+                    <mat-autocomplete #auto3="matAutocomplete">
+                      <mat-option *ngFor="let city of filteredEndCity | async" [value]="city">
+                        {{city}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>End State</mat-label>
+                    <input type="text"
+                           placeholder="Enter End State"
+                           matInput
+                           [formControl]="addRideControl"
+                           [matAutocomplete]="auto4"
+                           [(ngModel)]="endState"
+                           name="endState">
+                    <mat-autocomplete #auto4="matAutocomplete">
+                      <mat-option *ngFor="let state of filteredEndState | async" [value]="state">
+                        {{state}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Choose start date</mat-label>
-            <input (dateInput)="OnStartDateChange($event.value)" matInput [matDatepicker]="startPicker">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
-            <mat-datepicker #startPicker></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Choose end date</mat-label>
-            <input (dateInput)="OnEndDateChange($event.value)" matInput [matDatepicker]="endPicker">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
-            <mat-datepicker #endPicker></mat-datepicker>
-          </mat-form-field>
-
-          <p></p>
+          <div class="buttons">
+            <button (click)="clickAddRide()" class="ride-btn add-btn">add ride</button>
+            <button (click)="clearFields()" class="ride-btn clear-btn me-3">clear</button>
+          </div>
 
         </div>
       </form>
