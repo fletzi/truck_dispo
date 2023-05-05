@@ -278,6 +278,10 @@ export class TableComponent {
 
   hiddenColumns: number[] = [];
 
+  /**
+   * The function updates an array of hidden columns based on boolean values for each day of the week and a driver name
+   * column.
+   */
   updateHiddenColumns() {
     this.hiddenColumns = [9];
 
@@ -321,6 +325,9 @@ export class TableComponent {
 
   displayedColumns: string[] = ['name', 'address1', 'address2', 'address3', 'address4', 'address5', 'address6', 'address7', 'address8', 'edit'];
 
+  /**
+   * The function updates the displayed columns based on the boolean values of various properties.
+   */
   updateView() {
     const displayedColumns = [
       'name',
@@ -413,6 +420,17 @@ export class TableComponent {
   selectedCellDriver: any;
   selectedCellWeekday: any;
 
+
+  /**
+   * The function highlights a clicked cell, saves the driver and weekday information of the cell, and updates them in a
+   * service.
+   * @param {MouseEvent} event - A MouseEvent object that represents the event that occurred when the user clicked on a
+   * cell.
+   * @param driver - It is a variable that represents the driver associated with the cell that was clicked. It is likely an
+   * object or a string that contains information about the driver, such as their name or ID.
+   * @param {any} weekday - It is a variable of type "any" that represents the weekday (e.g. Monday, Tuesday, etc.)
+   * associated with the clicked cell.
+   */
   // @ts-ignore
   onCellClicked(event: MouseEvent, driver, weekday: any): void {
     // Remove the highlight from the previously selected cell
@@ -435,6 +453,9 @@ export class TableComponent {
     this.editDriverPositionService.updateSelectedWeekday(this.selectedCellWeekday);
   }
 
+  /**
+   * This function checks if a driver position can be edited and displays an error message if it cannot.
+   */
   editDriverPositon() {
     if (this.selectedCellWeekday == null) {
       this.alertService.setMessage("To edit a driver position you first have to select a driver position you want to edit (table cell).");
@@ -447,20 +468,37 @@ export class TableComponent {
     }
   }
 
+  /**
+   * The function navigates to the "edit-driver-position" route relative to the current route using Angular's router.
+   */
   go() {
     this.router.navigate([`../edit-driver-position`], { relativeTo: this.route });
   }
 
+  /**
+   * This function checks if the user is an admin by retrieving a boolean value from the session storage.
+   * @returns The function `isAdmin()` is returning a boolean value (`true` or `false`) based on whether the value of the
+   * `isAdmin` key in the `sessionStorage` object is equal to the string `"true"`.
+   */
   isAdmin() {
     return sessionStorage.getItem('isAdmin') == "true";
   }
 
   now = new Date();
 
+  /**
+   * This function exports a table in an Excel format with a specific file name and sheet name.
+   */
   exportTable(){
     this.matTableExporter.exportTable('xlsx', {fileName:'myDriversExport_' + this.now.toDateString(), sheet: 'export'});
   }
 
+  /**
+   * This function sets the sorting direction for a data source based on a given sort object.
+   * @param {Sort} sort - The parameter "sort" is of type "Sort", which is likely an interface or class that defines
+   * properties related to sorting data. It is being used in a method called "sortColumn" to determine whether or not to
+   * apply sorting to a data source based on the direction of the sort.
+   */
   sortColumn(sort: Sort) {
     if(sort.direction) {
       this.dataSource.sort = this.sort;

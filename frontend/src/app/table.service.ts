@@ -53,6 +53,13 @@ export class TableService {
 
   constructor() { }
 
+  /* These are methods in the `TableService` class that update the values of various `BehaviorSubject` observables. Each
+  method takes in a new value for the corresponding observable and calls the `next()` method on the `BehaviorSubject` to
+  emit the new value to all subscribers of the observable. For example, `updateShowDispatcher()` takes in a boolean
+  value for `showDispatcherSource` and updates the `showDispatcherSource` observable with the new value using
+  `this.showDispatcherSource.next(showDispatcherSource)`. This allows other components or services in the application to
+  subscribe to these observables and react to changes in their values. */
+
   updateShowDispatcher(showDispatcherSource: boolean): void {
     this.showDispatcherSource.next(showDispatcherSource);
   }

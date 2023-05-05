@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { format } from 'date-fns';
-import { AlertService } from "../alert.service";
-import { InfocardsService } from "../infocards.service";
+import {Component, OnInit} from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {format} from 'date-fns';
+import {AlertService} from "../alert.service";
+import {InfocardsService} from "../infocards.service";
 import {TableService} from "../table.service";
 import {AllDriverPositionsService} from "../all-driver-positions.service";
 
@@ -13,8 +13,8 @@ import {AllDriverPositionsService} from "../all-driver-positions.service";
 })
 export class MapComponent implements OnInit {
 
-  url:string = "";
-  showingAllDrivers:boolean = false;
+  url: string = "";
+  showingAllDrivers: boolean = false;
   isLoading = false;
   // @ts-ignore
   map: google.maps.Map;
@@ -22,50 +22,57 @@ export class MapComponent implements OnInit {
   currentInfoWindow: google.maps.InfoWindow = null;
   markers: google.maps.Marker[] = [];
 
-  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService, private tableControlService: TableService, private allDriverPositionsService: AllDriverPositionsService) {}
+  constructor(private http: HttpClient, private alertService: AlertService, private infocardsService: InfocardsService, private tableControlService: TableService, private allDriverPositionsService: AllDriverPositionsService) {
+  }
 
   // @ts-ignore
   myDate: Date;
   formattedDate: string = "MM / DD / YY";
   drivers: any[] = [];
 
-
-
+  /**
+   * Asynchronously retrieves all drivers' positions from the server and updates the drivers array.
+   * Also sets an appropriate message in the alertService according to the response.
+   */
   async getAllDrivers(): Promise<void> {
-    // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
+    // Use a proxy for dev purposes.
+    // https://cors-anywhere.herokuapp.com/
     let token = sessionStorage.getItem('jwt');
     try {
       const data: any = await this.http.get(this.url, {
-        headers: new HttpHeaders(
-          {
-            'Authorization': 'Bearer ' + token,
-            'Accept': '*/*',
-            'Content-Type': 'application/json'
-          }),}).toPromise();
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + token,
+          'Accept': '*/*',
+          'Content-Type': 'application/json'
+        }),
+      }).toPromise();
       this.drivers = data;
-      console.log(data)
+      console.log(data);
       if (data.length == 1) {
         this.alertService.setMessage("driver position has been updated.");
-      }
-      else {
+      } else {
         this.alertService.setMessage("driver positions have been updated.");
       }
-      this.alertService.setCode(200); // Hier setzen wir den errorCode auf den Standardwert 200 für eine erfolgreiche Anfrage
+      // Set errorCode to 200 for a successful request.
+      this.alertService.setCode(200);
     } catch (error) {
       console.error('HTTP Request was not successful', error);
       // @ts-ignore
       if (error.status == 400) {
         this.alertService.setMessage("There are no driver positions for the date you selected.");
-      }
-      else {
+      } else {
         // @ts-ignore
         this.alertService.setMessage(error.statusText + " - Error: " + error.status);
       }
+      // Set errorCode to the error status.
       // @ts-ignore
       this.alertService.setCode(error.status);
     }
   }
 
+  /**
+   * Increases the current date by one day and updates the formattedDate property and the map.
+   */
   increaseDate() {
     const newDate = new Date(this.myDate);
     newDate.setDate(newDate.getDate() + 1);
@@ -74,6 +81,9 @@ export class MapComponent implements OnInit {
     this.initMap();
   }
 
+  /**
+   * Decreases the current date by one day and updates the formattedDate property and the map.
+   */
   decreaseDate() {
     const newDate = new Date(this.myDate);
     newDate.setDate(newDate.getDate() - 1);
@@ -92,22 +102,17 @@ export class MapComponent implements OnInit {
       });
 
       this.tableControlService.selectedMonday$.subscribe(selectedMonday => {
-        console.log("!!SelectedMonday delivered by Service: "+selectedMonday);
+        console.log("!!SelectedMonday delivered by Service: " + selectedMonday);
         this.myDate = selectedMonday;
         this.formattedDate = format(this.myDate, 'MM / dd / yy');
-        console.log("received new monday "+selectedMonday)
-
+        console.log("started map");
         this.initMap();
       });
-
-
     }, 1000);
-
-
   }
 
   // Initialisiert die Google Maps "Map"
-  async initMap(): Promise<void>{
+  async initMap(): Promise<void> {
     let formattedDate = format(this.myDate, 'yyyy-MM-dd');
     let dispatcher = sessionStorage.getItem("email");
     if (this.showingAllDrivers) {
@@ -166,14 +171,21 @@ export class MapComponent implements OnInit {
     });
   }
 
-// cache object
-  cache: {[address: string]: google.maps.LatLng} = {};
 
+  cache: { [address: string]: google.maps.LatLng } = {};
+
+  /**
+   Adds markers to the map for each driver in this.drivers with a non-empty address.
+   Sets an info window for each marker with the driver's details.
+   @returns Promise that resolves when all markers have been added to the map.
+   */
   async addMarkersToMap(): Promise<void> {
     try {
       for (const driver of this.drivers) {
         if (driver.address != "") {
+          // Get latitude and longitude from driver address
           const latLng = await this.getLatLngFromAddress(driver.address);
+          // Create a marker for the driver
           let marker = new google.maps.Marker({
             position: latLng,
             map: this.map,
@@ -181,7 +193,7 @@ export class MapComponent implements OnInit {
           });
           this.markers.push(marker);
 
-
+          // Determine driver's status as a string
           let statusString: string = "";
           const deliveryDate = new Date(driver.deliveryTime);
           const deliveryTimeFormatted = deliveryDate.toLocaleString('en-US', {
@@ -191,20 +203,23 @@ export class MapComponent implements OnInit {
             hour: '2-digit',
             minute: '2-digit'
           });
-
-
-          if (driver.status == "green") {
-            statusString = "available"
-          } else if (driver.status == "red") {
-            statusString = "unavailable"
-          } else if (driver.status == "blue") {
-            statusString = "vacation"
-          } else {
-            statusString = "unknown"
+          switch (driver.status) {
+            case "green":
+              statusString = "available";
+              break;
+            case "red":
+              statusString = "unavailable";
+              break;
+            case "blue":
+              statusString = "vacation";
+              break;
+            default:
+              statusString = "unknown";
+              break;
           }
 
+          // Create HTML content for the info window
           let driverName: string = driver.firstName + ' ' + driver.lastName;
-
           const contentString =
             '<div class="map-info">\n' +
             '  <span>' + driverName + '</span>\n' +
@@ -237,10 +252,12 @@ export class MapComponent implements OnInit {
             '\n' +
             '</div>';
 
+          // Create an info window for the marker with the HTML content
           const infowindow = new google.maps.InfoWindow({
             content: contentString,
           });
 
+          // Add click listener to the marker that opens the info window and sets the details in the infocardsService
           marker.addListener("click", () => {
             if (this.currentInfoWindow) {
               this.currentInfoWindow.close();
@@ -248,8 +265,6 @@ export class MapComponent implements OnInit {
             infowindow.open(this.map, marker);
             this.currentInfoWindow = infowindow;
             this.infocardsService.setDetails(driver.firstName + " " + driver.lastName, driver.address, statusString, deliveryTimeFormatted, driver.truckVIN, driver.rideNumber.toString(), driver.trailerVIN);
-
-            //add code for selection of drive in table / view on side panel
           });
         }
       }

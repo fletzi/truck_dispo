@@ -4,7 +4,6 @@ import {AlertService} from "../alert.service";
 import {FormControl, NgForm} from "@angular/forms";
 import {Observable, startWith} from "rxjs";
 import {map} from "rxjs/operators";
-import {MatOption, _MatOptionBase} from "@angular/material/core";
 import {format} from "date-fns";
 
 @Component({
@@ -40,8 +39,16 @@ export class AddRideComponent implements OnInit {
   constructor(private http: HttpClient, private alertService: AlertService) {
   }
 
+
+// This method is called when the component is initialized.
+  /**
+   * The ngOnInit function initializes various observables and calls a method to retrieve dispatcher drivers.
+   */
   ngOnInit(): void {
+    // Calls the getDispatcherDrivers method and sets the isLoading variable to false when the promise is resolved.
     this.getDispatcherDrivers().then(r => this.isLoading = false);
+
+    // Observables to filter start and end city inputs.
     this.filteredStartCity = this.addRideControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filterCity(value || '')),
@@ -50,6 +57,8 @@ export class AddRideComponent implements OnInit {
       startWith(''),
       map(value => this._filterCity(value || '')),
     );
+
+    // Observables to filter start and end state inputs.
     this.filteredStartState = this.addRideControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filterState(value || '')),
@@ -60,26 +69,54 @@ export class AddRideComponent implements OnInit {
     );
   }
 
+// Filters city options based on the user's input.
+  /**
+   * This is a private function that filters a list of cities based on a given value and returns a maximum of
+   * 10 matching results.
+   * @param {string} value - a string that represents the user input to filter the city options.
+   * @returns An array of strings is being returned. The strings in the array are the options from the `city` array that
+   * include the `value` parameter (after converting both to lowercase), and the array is sliced to only include the first
+   * 10 options.
+   */
   private _filterCity(value: string): string[] {
     const filterValueCity = value.toLowerCase();
-
     return this.city.filter(option => option.toLowerCase().includes(filterValueCity)).slice(0, 10);
   }
 
+// Filters state options based on the user's input.
+  /**
+   * This function filters an array of strings based on a given value and returns a new array with a maximum of 10 matching
+   * elements.
+   * @param {string} value - a string that represents the user input to filter the options in the state array.
+   * @returns The function `_filterState` is returning an array of strings that match the search criteria. The search
+   * criteria is the `value` parameter passed to the function, which is converted to lowercase and used to filter the
+   * `this.state` array. The filtered array is then sliced to return only the first 10 matching strings.
+   */
   private _filterState(value: string): string[] {
     const filterValueState = value.toLowerCase();
-
     return this.state.filter(option => option.toLowerCase().includes(filterValueState)).slice(0, 10);
   }
 
+// Gets the dispatcher's assigned drivers.
+  /**
+   * This function retrieves a list of drivers assigned to a dispatcher from an API endpoint using a JWT token for
+   * authentication.
+   */
   async getDispatcherDrivers() {
+    // Gets the dispatcher's email from session storage.
     // @ts-ignore
     const dispatcher: string = sessionStorage.getItem("email");
-    // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
+
+    // URL of the API endpoint to get the dispatcher's assigned drivers.
+    // Uses a proxy for development purposes.
     let url = `https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/mgmt/getDispatcher/${dispatcher}`;
+
+    // Gets the JWT token from session storage.
     let token = sessionStorage.getItem('jwt');
+
     try {
       let data: any;
+      // Sends an HTTP GET request to the API endpoint to get the dispatcher's assigned drivers.
       data = await this.http.get(url, {
         headers: new HttpHeaders(
           {
@@ -88,14 +125,17 @@ export class AddRideComponent implements OnInit {
             'Content-Type': 'application/json'
           }),
       }).toPromise();
+
+      // Sets the dispatcherDrivers variable to the list of drivers returned by the API.
       this.dispatcherDrivers = data.drivers;
-      console.log(data.drivers);
+
+      // If no drivers were returned, sets an error message.
       if (data.drivers.length == 0) {
         this.alertService.setMessage("No drivers assigned to you were found.");
         this.alertService.setCode(400);
       }
     } catch (error) {
-      console.error('HTTP Request was not successful', error);
+      // If there is an error, sets the error message and code.
       // @ts-ignore
       this.alertService.setMessage(error.statusText);
       // @ts-ignore
@@ -103,23 +143,27 @@ export class AddRideComponent implements OnInit {
     }
   }
 
+// This function is called when a driver is selected from the dropdown list
   onDriverSelected(value: string) {
     this.selectedDriver = value;
   }
 
+// This function is called when the start date is changed using the date picker
   OnStartDateChange(value: unknown) {
     this.startDate = value;
   }
 
+// This function is called when the end date is changed using the date picker
   OnEndDateChange(value: unknown) {
     this.endDate = value;
-
   }
 
+// This function is called when the time for clearing the ride is set
   timeSet(value: any) {
     this.clearingTime = value;
   }
 
+// This function clears all the fields in the form
   clearFields() {
     this.selectedDriver = "";
     this.startDate = null;
@@ -131,25 +175,30 @@ export class AddRideComponent implements OnInit {
     this.clearingTime = null;
   }
 
+// This function is called when the "Add Ride" button is clicked
   clickAddRide() {
     this.isLoading = true;
     this.addRide();
   }
 
+// This function sends a request to add a new ride to the backend
   async addRide() {
     if (!this.checkFormFields()) {
+      // Show an error message if all fields are not filled in
       this.alertService.setMessage("All fields must be filled in to create a new ride.");
       this.alertService.setCode(500);
     } else {
+      // Format the start and end dates and times for the request payload
       let formattedStartDate = format(this.startDate, 'yyyy-MM-dd');
       let formattedEndDate = format(this.endDate, 'yyyy-MM-dd');
-      const token = sessionStorage.getItem("jwt");
 
+      // Format the clearing time and date
       let parts = this.clearingTime.split(":");
       const clearingDate: Date = this.endDate;
       clearingDate.setHours(parts[0]);
       clearingDate.setMinutes(parts[1]);
 
+      // Create the data payload for the request
       const data = {
         driver: {
           id: this.selectedDriver
@@ -164,7 +213,9 @@ export class AddRideComponent implements OnInit {
         endState: this.endState,
         driverDays: []
       };
-      console.log(data);
+
+      // Send the request to add the ride
+      const token = sessionStorage.getItem("jwt");
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + token,
         'Accept': '*/*',
@@ -172,21 +223,23 @@ export class AddRideComponent implements OnInit {
       });
       // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
       this.http.post('https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/addRide', data, {headers}).subscribe(response => {
-        this.alertService.setMessage("New ride was added successfully");
+          this.alertService.setMessage("New ride was added successfully");
           this.alertService.setCode(200);
           this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
+          // Show an error message if the request fails
           this.alertService.setMessage(error.message);
           this.alertService.setCode(error.status);
           this.isLoading = false;
         }
       );
     }
+    // Clear the form fields after the ride is added or an error occurs
     this.clearFields();
   }
 
-
+// This function checks if all the form fields are filled in
   checkFormFields(): boolean {
     return !(!this.selectedDriver ||
       !this.startDate ||

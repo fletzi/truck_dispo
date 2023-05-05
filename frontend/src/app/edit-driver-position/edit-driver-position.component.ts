@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, NgForm} from "@angular/forms";
-import {Observable, startWith, timeout} from "rxjs";
+import {Observable, startWith} from "rxjs";
 import {AlertService} from "../alert.service";
 import {map} from "rxjs/operators";
 import {EditDriverPositionService} from "../edit-driver-position.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {format} from "date-fns";
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 
 @Component({
@@ -44,30 +43,38 @@ export class EditDriverPositionComponent implements OnInit {
   constructor(private http: HttpClient, private editDriverPositionService: EditDriverPositionService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
   }
 
+  // Lifecycle hook called after the component is initialized
   ngOnInit() {
 
+    // Initialize an observable to filter the city based on user input
     this.filteredCity = this.editDriverPostionControlCity.valueChanges.pipe(
       startWith(''),
       map(value => this._filterCity(value || '')),
     );
 
+    // Initialize an observable to filter the state based on user input
     this.filteredState = this.editDriverPostionControlState.valueChanges.pipe(
       startWith(''),
       map(value => this._filterState(value || '')),
     );
 
+    // Subscribe to the selectedDriver$ observable from the editDriverPositionService
     this.editDriverPositionService.selectedDriver$.subscribe(selectedDriver => {
+      // Set the driverName variable to the selected driver's name
       this.driverName = selectedDriver.name;
     });
 
+    // Subscribe to the selectedWeekday$ observable from the editDriverPositionService
     this.editDriverPositionService.selectedWeekday$.subscribe(selectedWeekday => {
+      // Concatenate all the address fields into one string
       const address = selectedWeekday.address1 || selectedWeekday.address2 || selectedWeekday.address3 || selectedWeekday.address4 || selectedWeekday.address5 || selectedWeekday.address6 || selectedWeekday.address7 || selectedWeekday.address8;
 
-      // Call the function to extract the city and state information from the address
+      // Call the extractCityAndState() function to extract the city and state information from the address
       const cityAndState = this.extractCityAndState(address);
       const city = cityAndState?.city || "";
       const state = cityAndState?.state || "";
 
+      // Set the driverDayID variable to the selected weekday's ID
       this.driverDayID = selectedWeekday.id;
       // @ts-ignore
       this.selectedDateFormatted = this.formatDate(selectedWeekday.date);
@@ -86,9 +93,10 @@ export class EditDriverPositionComponent implements OnInit {
 
   }
 
-  // Define the function to extract the city and state information from the address
+// Define the function to extract the city and state information from the address
   extractCityAndState(input: string): { city: string, state: string } | null {
-    if(input == undefined) {
+    // If the input is undefined, return an empty object
+    if (input == undefined) {
       return {city: "", state: ""};
     }
 
@@ -126,30 +134,42 @@ export class EditDriverPositionComponent implements OnInit {
     return date.toLocaleDateString('en-US', options);
   }
 
+// A function to filter the city options based on user input
   private _filterCity(value: string): string[] {
     const filterValueCity = value.toLowerCase();
 
+    // Filter the city array based on the user input
     return this.city.filter(option => option.toLowerCase().includes(filterValueCity)).slice(0, 10);
   }
 
+// A function to filter the state options based on user input
   private _filterState(value: string): string[] {
     const filterValueState = value.toLowerCase();
 
+    // Filter the state array based on the user input
     return this.state.filter(option => option.toLowerCase().includes(filterValueState)).slice(0, 10);
   }
 
+// A variable to store the status translation
   statusTranslated: string = "";
 
+// Function to handle the "Edit Driver Position" button click
   clickEditDriverPosition() {
+    // Set the loading flag to true
     this.isLoading = true;
+    // Call the editDriverPosition function
     this.editDriverPosition();
   }
 
+// Function to edit the driver position
   editDriverPosition() {
+    // Check if all form fields have been filled
     if (!this.checkFormFields()) {
+      // Set an error message if all form fields have not been filled
       this.alertService.setMessage("All fields must be filled in to update the driver position.");
       this.alertService.setCode(500);
     } else {
+      // If all form fields have been filled, translate the selected status to a color code
       if (this.selectedStatus == "available") {
         this.statusTranslated = "green";
       } else if (this.selectedStatus == "unavailable") {
@@ -158,41 +178,57 @@ export class EditDriverPositionComponent implements OnInit {
         this.statusTranslated = "blue";
       }
     }
-      const token = sessionStorage.getItem("jwt");
-      const data = {
-        driverDayID: Number(this.driverDayID),
-        state: this.selectedState,
-        city: this.selectedCity,
-        status: this.statusTranslated
-      };
-      console.log(data);
-      const headers = new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
-      });
-      // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
-      this.http.put('https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/editDriverPosition', data, {headers}).subscribe(response => {
-          this.alertService.setMessage("Driver Position was updated successfully");
-          this.alertService.setCode(200);
-          setTimeout(() => {
-            this.go();
-            this.isLoading = false;
-          }, 5000);
-        },
-        (error: HttpErrorResponse) => {
-          this.alertService.setMessage(error.message);
-          this.alertService.setCode(error.status);
+
+    // Set up the data object to send to the API
+    const token = sessionStorage.getItem("jwt");
+    const data = {
+      driverDayID: Number(this.driverDayID),
+      state: this.selectedState,
+      city: this.selectedCity,
+      status: this.statusTranslated
+    };
+
+    console.log(data);
+
+    // Set up the headers for the API request
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Accept': '*/*',
+      'Content-Type': 'application/json'
+    });
+
+    // Make the API PUT request to edit the driver position
+    // Note: https://cors-anywhere.herokuapp.com/ is a proxy for development purposes
+    this.http.put('https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/dispo/editDriverPosition', data, {headers}).subscribe(response => {
+        // Set a success message if the request was successful
+        this.alertService.setMessage("Driver Position was updated successfully");
+        this.alertService.setCode(200);
+
+        // Redirect to the "My Driver Positions" page after 5 seconds
+        setTimeout(() => {
+          this.go();
           this.isLoading = false;
-        }
-      );
+        }, 5000);
+      },
+      // Handle errors
+      (error: HttpErrorResponse) => {
+        // Set an error message if the request was unsuccessful
+        this.alertService.setMessage(error.message);
+        this.alertService.setCode(error.status);
+        this.isLoading = false;
+      }
+    );
+
+    // Clear the form fields after the API request is made
     this.clearFields();
   }
 
+// Function to navigate to the "My Driver Positions" page
   go() {
-    this.router.navigate([`../my-driver-positions`], { relativeTo: this.route });
+    this.router.navigate([`../my-driver-positions`], {relativeTo: this.route});
   }
 
+// Function to clear the form fields
   clearFields() {
     this.editDriverPositionForm.reset();
     this.editDriverPostionControlCity.setValue("");
@@ -201,23 +237,31 @@ export class EditDriverPositionComponent implements OnInit {
     this.selectedState = "";
   }
 
+// Check if all form fields are filled
   checkFormFields(): boolean {
-    return !(!this.selectedCity ||
-      !this.selectedState ||
-      !this.selectedStatus);
+    // Return true if any of the required fields are empty
+    return !(!this.selectedCity || !this.selectedState || !this.selectedStatus);
   }
 
+// Set the current city as the selected city
   keepCurrentCity() {
+    // Set the value of the editDriverPostionControlCity form control to the current city
     this.editDriverPostionControlCity.setValue(this.currentCity);
+    // Set the selected city to the current city
     this.selectedCity = this.currentCity;
   }
 
+// Set the current state as the selected state
   keepCurrentState() {
-    this.editDriverPostionControlState.setValue(this.currentCity);
+    // Set the value of the editDriverPostionControlState form control to the current state
+    this.editDriverPostionControlState.setValue(this.currentState);
+    // Set the selected state to the current state
     this.selectedState = this.currentState;
   }
 
+// Set the current status as the selected status
   keepCurrentStatus() {
+    // Set the selected status to the current status
     this.selectedStatus = this.currentStatus;
   }
 }

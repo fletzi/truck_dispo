@@ -19,11 +19,12 @@ export class LoginComponent {
   @ViewChild('loginForm', {static: false}) loginForm: NgForm;
 
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
-
+  // Method to check if the email and password fields are empty
   fieldsNull() {
     return (this.email == "" || this.password == "");
   }
 
+  // The onSubmit() method for the login form
   onSubmit() {
     this.isLoading = true;
     if(this.fieldsNull()) {
@@ -34,6 +35,7 @@ export class LoginComponent {
       const data = {email: this.email, password: this.password};
       // https://cors-anywhere.herokuapp.com/ - Proxy for dev purposes
       this.http.post('https://cors-anywhere.herokuapp.com/https://dispodev.ew.r.appspot.com/api/auth/signin', data).subscribe(response => {
+          // Save the response values to session storage
           // @ts-ignore
           sessionStorage.setItem('jwt', response.jwt);
           // @ts-ignore
@@ -44,8 +46,10 @@ export class LoginComponent {
           if (response.roles.includes('ROLE_ADMIN')) {
             sessionStorage.setItem('isAdmin', 'true');
           }
+          // Navigate to the user's driver positions
           this.go();
         },
+        // Handle any errors
         (error: HttpErrorResponse) => {
           // Handle the error response here
           if (error.status === 401) {
@@ -57,14 +61,17 @@ export class LoginComponent {
           }
         }
       );
+      // Reset the form
       this.loginForm.reset();
     }
   }
 
+  // Clear the error message
   clearError() {
     this.errorMessage = '';
   }
 
+  // Navigate to the user's driver positions
   go() {
     this.router.navigate([`../my-driver-positions`], { relativeTo: this.route });
   }

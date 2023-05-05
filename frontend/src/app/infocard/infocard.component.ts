@@ -17,8 +17,9 @@ export class InfocardComponent implements OnInit{
 
   constructor(private infocardsService: InfocardsService) { }
 
+  // Lifecycle hook called after the component is initialized
   ngOnInit() {
-    // Subscribe to the messageUpdate event from the AlertService
+    // Subscribe to the nameUpdate event from the AlertService
     this.infocardsService.nameUpdate.subscribe(
       // Callback function to handle the event
       (name: string) => {
@@ -26,6 +27,7 @@ export class InfocardComponent implements OnInit{
         this.driverName = name;
       }
     );
+    // Subscribe to the locationUpdate event from the AlertService
     this.infocardsService.locationUpdate.subscribe(
       // Callback function to handle the event
       (location: string) => {
@@ -33,6 +35,7 @@ export class InfocardComponent implements OnInit{
         this.driverLocation = location;
       }
     );
+    // Subscribe to the statusUpdate event from the AlertService
     this.infocardsService.statusUpdate.subscribe(
       // Callback function to handle the event
       (status: string) => {
@@ -40,6 +43,7 @@ export class InfocardComponent implements OnInit{
         this.driverStatus = status;
       }
     );
+    // Subscribe to the clearingTimeUpdate event from the AlertService
     this.infocardsService.clearingTimeUpdate.subscribe(
       // Callback function to handle the event
       (clearingTime: string) => {
@@ -47,6 +51,7 @@ export class InfocardComponent implements OnInit{
         this.driverClearingTime = clearingTime;
       }
     );
+    // Subscribe to the rideUpdate event from the AlertService
     this.infocardsService.rideUpdate.subscribe(
       // Callback function to handle the event
       (ride: string) => {
@@ -54,6 +59,7 @@ export class InfocardComponent implements OnInit{
         this.driverRide = ride;
       }
     );
+    // Subscribe to the trailerVINUpdate event from the AlertService
     this.infocardsService.trailerVINUpdate.subscribe(
       // Callback function to handle the event
       (trailerVIN: string) => {
@@ -61,6 +67,7 @@ export class InfocardComponent implements OnInit{
         this.trailerVIN = trailerVIN;
       }
     );
+    // Subscribe to the truckVINUpdate event from the AlertService
     this.infocardsService.truckVINUpdate.subscribe(
       // Callback function to handle the event
       (truckVIN: string) => {

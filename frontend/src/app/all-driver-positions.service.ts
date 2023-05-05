@@ -11,6 +11,10 @@ export class AllDriverPositionsService {
 
   constructor() { }
 
+  /**
+   * This function updates the value of a boolean variable indicating whether all drivers should be shown or not.
+   * @param {boolean} showingAllDriversSource - A boolean value indicating whether all drivers should be shown or not.
+   */
   updateShowingAllDrivers(showingAllDriversSource: boolean): void {
     this.showingAllDriversSource.next(showingAllDriversSource);
   }

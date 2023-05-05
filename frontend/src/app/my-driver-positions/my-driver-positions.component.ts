@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { AlertService } from "../alert.service";
-import {AllDriverPositionsService} from "../all-driver-positions.service";
+import { Component, OnInit } from '@angular/core';
+import { AllDriverPositionsService } from '../all-driver-positions.service';
 
 @Component({
   selector: 'app-my-driver-positions',
@@ -8,16 +7,18 @@ import {AllDriverPositionsService} from "../all-driver-positions.service";
   styleUrls: ['./my-driver-positions.component.css']
 })
 
-
-export class MyDriverPositionsComponent implements OnInit{
-  showingAllDrivers:boolean = false;
+export class MyDriverPositionsComponent implements OnInit {
+  showingAllDrivers: boolean = false; // Indicates whether all drivers are being shown or not.
 
   constructor(private allDriverPositionsService: AllDriverPositionsService) {
+    // Injects the AllDriverPositionsService to retrieve and manipulate driver positions data.
   }
 
   ngOnInit() {
+    // Called after the component is initialized. Initializes the showingAllDrivers flag to false and updates the service with this value.
     this.showingAllDrivers = false;
     this.allDriverPositionsService.updateShowingAllDrivers(this.showingAllDrivers);
   }
 
 }
+

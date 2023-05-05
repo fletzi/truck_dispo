@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertService } from '../alert.service';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {AlertService} from '../alert.service';
 import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
@@ -9,17 +9,19 @@ import {animate, style, transition, trigger} from "@angular/animations";
   animations: [
     // Define the fade-in animation
     trigger('fadeInOut', [
+      // Set animation for entering element
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms', style({ opacity: 1 }))
+        style({opacity: 0}),
+        animate('300ms', style({opacity: 1}))
       ]),
+      // Set animation for leaving element
       transition(':leave', [
-        animate('300ms', style({ opacity: 0 }))
+        animate('300ms', style({opacity: 0}))
       ])
     ])
   ]
 })
-
+// Define the AlertComponent
 export class AlertComponent implements OnInit, OnDestroy {
 
   // Variables to store the error message and code
@@ -29,8 +31,10 @@ export class AlertComponent implements OnInit, OnDestroy {
   // Timer ID returned by setTimeout()
   hideTimeout: any;
 
-  constructor(private alertService: AlertService) { }
+  constructor(private alertService: AlertService) {
+  }
 
+  // Lifecycle hook called after the component is initialized
   ngOnInit() {
     // Subscribe to the messageUpdate event from the AlertService
     this.alertService.messageUpdate.subscribe(
@@ -55,6 +59,7 @@ export class AlertComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Lifecycle hook called when the component is destroyed
   ngOnDestroy() {
     // Clean up the timer when the component is destroyed
     clearTimeout(this.hideTimeout);
